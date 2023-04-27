@@ -6,18 +6,12 @@ class User(AbstractUser):
     """Модель пользователя."""
 
     USER = 'user'
-    MODERATOR = 'moderator'
     ADMIN = 'admin'
     USER_ROLES = (
         (USER, 'Пользователь'),
-        (MODERATOR, 'Модератор'),
         (ADMIN, 'Администратор'),
     )
 
-    bio = models.TextField(
-        blank=True,
-        verbose_name='Биография',
-    )
     role = models.CharField(
         max_length=9,
         choices=USER_ROLES,
@@ -31,6 +25,31 @@ class User(AbstractUser):
         verbose_name='Электронная почта',
     )
 
+    password = models.CharField(
+        max_length=150,
+        blank=False,
+        verbose_name='Пароль',
+    )
+    
+    first_name = models.CharField(
+        max_length=150,
+        blank=False,
+        verbose_name='Имя',
+    )
+
+    last_name = models.CharField(
+        max_length=150,
+        blank=False,
+        verbose_name='Фамилия',
+    )
+
+    
+    is_subscribed = models.BooleanField(
+        default = False,
+        verbose_name='Подписка',
+    )
+    
+
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
@@ -43,6 +62,3 @@ class User(AbstractUser):
     def is_admin(self):
         return self.role == self.ADMIN or self.is_staff or self.is_superuser
 
-    @property
-    def is_moderator(self):
-        return self.role == self.MODERATOR

@@ -7,7 +7,6 @@ class IsAdmin(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.is_admin
 
-
 class IsAdminOrReadOnly(BasePermission):
     """Администратор или только чтение."""
 
@@ -19,9 +18,9 @@ class IsAdminOrReadOnly(BasePermission):
         )
 
 
-class IsAuthorOrStaffOrAuthenticatedCreateOrReadOnly(BasePermission):
+class IsAuthorOrAuthenticatedCreateOrReadOnly(BasePermission):
     """
-    Автор или стафф могут редактировать/удалять.
+    Автор может редактировать/удалять.
     Аутентифицированные создавать.
     Остальные - только чтение.
     """
@@ -34,6 +33,5 @@ class IsAuthorOrStaffOrAuthenticatedCreateOrReadOnly(BasePermission):
             request.method in SAFE_METHODS
             or request.user.is_authenticated
             and (request.user == obj.author
-                 or request.user.is_admin
-                 or request.user.is_moderator)
+                 or request.user.is_admin)
         )

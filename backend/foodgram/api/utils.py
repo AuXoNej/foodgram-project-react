@@ -7,8 +7,8 @@ def get_confirmation_code(user) -> str:
     return default_token_generator.make_token(user)
 
 
-def check_confirmation_code(user, token) -> bool:
-    return default_token_generator.check_token(user, token)
+def check_password(user, password) -> bool:
+    return password == user.password
 
 
 def send_confirmation_email(email: str, confirmation_code: str) -> None:
