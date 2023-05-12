@@ -1,54 +1,50 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
+from foodgram.settings import MAX_LENGTH_EMAIL, MAX_LENGTH_NAME
+
+
+def validate_username(value):
+    for symbol in ('!', '@', '#', '$', '%', '^',
+                   '&', '*', '~', ':', ';', ',', '/'):
+        if symbol in value:
+            raise ValidationError(
+                'Имя пользователя содержит недопустимые символы'
+            )
 
 
 class User(AbstractUser):
     """Модель пользователя."""
 
-    USER = 'user'
-    ADMIN = 'admin'
-    USER_ROLES = (
-        (USER, 'Пользователь'),
-        (ADMIN, 'Администратор'),
-    )
-
-    role = models.CharField(
-        max_length=9,
-        choices=USER_ROLES,
-        default=USER,
-        verbose_name='Права доступа',
-    )
     email = models.EmailField(
-        max_length=256,
+        max_length=MAX_LENGTH_EMAIL,
         blank=False,
         unique=True,
         verbose_name='Электронная почта',
     )
 
-    password = models.CharField(
-        max_length=150,
-        blank=False,
-        verbose_name='Пароль',
+    username = models.CharField(
+        blank=True,
+        max_length=MAX_LENGTH_NAME,
+        unique=True,
+        validators=[validate_username]
     )
-    
+
     first_name = models.CharField(
-        max_length=150,
+        max_length=MAX_LENGTH_NAME,
         blank=False,
         verbose_name='Имя',
     )
 
     last_name = models.CharField(
-        max_length=150,
+        max_length=MAX_LENGTH_NAME,
         blank=False,
         verbose_name='Фамилия',
     )
 
-    
-    is_subscribed = models.BooleanField(
-        default = False,
-        verbose_name='Подписка',
-    )
-    
+    USERNAME_FIELD = 'email'
+
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -57,8 +53,3 @@ class User(AbstractUser):
 
     def __str__(self) -> str:
         return self.username
-
-    @property
-    def is_admin(self):
-        return self.role == self.ADMIN or self.is_staff or self.is_superuser
-
