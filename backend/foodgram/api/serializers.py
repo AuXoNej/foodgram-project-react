@@ -1,21 +1,10 @@
-from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
-
+from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
-
+from recipes.models import (Favourite, Ingredient, IngredientRecipes, Recipe,
+                            ShoppingCart, Subscription, Tag, TagRecipe)
 from rest_framework import serializers
-
 from users.models import User
-from recipes.models import (
-    Favourite,
-    Ingredient,
-    IngredientRecipes,
-    Recipe,
-    ShoppingCart,
-    Subscription,
-    Tag,
-    TagRecipe,
-)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -124,9 +113,8 @@ class RecipeSrializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         if 'tags' not in self.initial_data:
-            recipe = Recipe.objects.create(
+            return Recipe.objects.create(
                 author=self.context['request'].user, **validated_data)
-            return recipe
 
         tags = self.initial_data.pop('tags')
         ingredients = self.initial_data.pop('ingredients')

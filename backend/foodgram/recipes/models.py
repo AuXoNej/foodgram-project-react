@@ -1,9 +1,8 @@
+import re
+
 from django.core.exceptions import ValidationError
 from django.db import models
-
 from users.models import User
-
-import re
 
 
 def validate_color(value):
