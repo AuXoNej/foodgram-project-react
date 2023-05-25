@@ -1,15 +1,8 @@
-import re
-
-from django.core.exceptions import ValidationError
 from django.db import models
+from django.core.validators import MinValueValidator
 from users.models import User
 
-
-def validate_color(value):
-    if not re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', value):
-        raise ValidationError(
-            'Не валидный hex-код'
-        )
+from .validators import validate_color
 
 
 class Tag(models.Model):
@@ -52,6 +45,18 @@ class Ingredient(models.Model):
         return self.name
 
 
+class IngredientAmount(models.Model):
+    ingredient = models.ForeignKey(
+        Ingredient, on_delete=models.CASCADE)
+    amount = models.PositiveSmallIntegerField(
+        validators=[
+            MinValueValidator(1)
+        ]
+    )
+
+    def __str__(self):
+        return self.ingredient.name
+
 class Recipe(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
@@ -59,13 +64,11 @@ class Recipe(models.Model):
         verbose_name='автор'
     )
     ingredients = models.ManyToManyField(
-        Ingredient,
-        through='IngredientRecipes',
+        IngredientAmount,
         verbose_name='ингридиент')
 
     tags = models.ManyToManyField(
         Tag,
-        through='TagRecipe',
         verbose_name='тег'
     )
 
@@ -77,32 +80,17 @@ class Recipe(models.Model):
 
     name = models.CharField(max_length=16)
     text = models.TextField()
-    cooking_time = models.PositiveSmallIntegerField()
+    cooking_time = models.PositiveSmallIntegerField(
+        validators=[
+            MinValueValidator(1)
+        ]
+    )
 
     class Meta:
         ordering = ['-id']
 
     def __str__(self):
         return self.name
-
-
-class TagRecipe(models.Model):
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.tag} {self.recipe}'
-
-
-class IngredientRecipes(models.Model):
-    ingredient = models.ForeignKey(
-        Ingredient, on_delete=models.CASCADE, related_name='+')
-    recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, related_name='ingredient_recipes')
-    amount = models.PositiveSmallIntegerField()
-
-    def __str__(self):
-        return f'{self.ingredient} {self.amount}'
 
 
 class Subscription(models.Model):
@@ -125,6 +113,7 @@ class Favourite(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='+'
     )
 
     recipe = models.ForeignKey(
@@ -141,6 +130,7 @@ class ShoppingCart(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='+'
     )
 
     recipe = models.ForeignKey(

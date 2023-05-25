@@ -1,44 +1,32 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.core.exceptions import ValidationError
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
-from foodgram.settings import MAX_LENGTH_EMAIL, MAX_LENGTH_NAME
 
-
-def validate_username(value):
-    for symbol in ('!', '@', '#', '$', '%', '^',
-                   '&', '*', '~', ':', ';', ',', '/'):
-        if symbol in value:
-            raise ValidationError(
-                'Имя пользователя содержит недопустимые символы'
-            )
 
 
 class User(AbstractUser):
     """Модель пользователя."""
 
     email = models.EmailField(
-        max_length=MAX_LENGTH_EMAIL,
-        blank=False,
+        max_length=settings.MAX_LENGTH_EMAIL,
         unique=True,
         verbose_name='Электронная почта',
     )
 
     username = models.CharField(
-        blank=True,
-        max_length=MAX_LENGTH_NAME,
+        max_length=settings.MAX_LENGTH_NAME,
         unique=True,
-        validators=[validate_username]
+        validators=[UnicodeUsernameValidator]
     )
 
     first_name = models.CharField(
-        max_length=MAX_LENGTH_NAME,
-        blank=False,
+        max_length=settings.MAX_LENGTH_NAME,
         verbose_name='Имя',
     )
 
     last_name = models.CharField(
-        max_length=MAX_LENGTH_NAME,
-        blank=False,
+        max_length=settings.MAX_LENGTH_NAME,
         verbose_name='Фамилия',
     )
 

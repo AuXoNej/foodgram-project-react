@@ -1,8 +1,8 @@
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
-from recipes.models import (Favourite, Ingredient, IngredientRecipes, Recipe,
-                            ShoppingCart, Subscription, Tag, TagRecipe)
+from recipes.models import (Favourite, Ingredient, IngredientAmount, Recipe,
+                            ShoppingCart, Subscription, Tag)
 from rest_framework import serializers
 from users.models import User
 
@@ -20,8 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email', 'first_name',
                   'last_name', 'is_subscribed')
-
-        extra_kwargs = {'password': {'write_only': True}}
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -51,12 +49,10 @@ class RecipeSrializer(serializers.ModelSerializer):
     def get_is_favorited(self, obj):
         user = self.context.get('request').user
         return obj.recipe_is_favourite.filter(user=user).exists()
-        # return Favourite.objects.filter(recipe=obj, user=user).exists()
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context.get('request').user
         return obj.recipe_shopping_cart.filter(user=user).exists()
-        # return ShoppingCart.objects.filter(recipe=obj, user=user).exists()
 
     def get_tags(self, instance):
         tags_recipes = []
@@ -78,6 +74,7 @@ class RecipeSrializer(serializers.ModelSerializer):
         )
 
     def get_ingredients(self, instance):
+        """
         ingredients_recipes = []
         for ingredients in instance.ingredients.all():
             amount = model_to_dict(
@@ -94,6 +91,26 @@ class RecipeSrializer(serializers.ModelSerializer):
                     )
                 )
             )
+            """
+        ingredients_recipes = []
+        for ingredients in instance.ingredients.all():
+            ingredient = model_to_dict(
+                Ingredient.objects.get(
+                    id=model_to_dict(ingredients)['ingredient']
+                )
+            )
+            amount = model_to_dict(ingredients)['amount']
+            
+            ingredients_recipes.append(
+                dict(
+                    list(
+                        ingredient.items()
+                    ) + list(
+                        {'amount': amount}.items()
+                    )
+                )
+            )
+
         return ingredients_recipes
 
     class Meta:
@@ -122,15 +139,18 @@ class RecipeSrializer(serializers.ModelSerializer):
         recipe = Recipe.objects.create(
             author=self.context['request'].user, **validated_data)
 
+        lst = []
         for tag_id in tags:
             current_tag = get_object_or_404(
                 Tag.objects,
                 pk=tag_id
             )
 
-            TagRecipe.objects.create(
-                tag=current_tag, recipe=recipe)
+            lst.append(current_tag)
 
+        recipe.tags.set(lst)
+
+        lst = []
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             ingredient_amount = ingredient['amount']
@@ -138,11 +158,12 @@ class RecipeSrializer(serializers.ModelSerializer):
                 Ingredient.objects,
                 pk=ingredient_id
             )
-            IngredientRecipes.objects.create(
-                ingredient=current_ingredient,
-                amount=ingredient_amount,
-                recipe=recipe
-            )
+            ingredient_recipe, created= IngredientAmount.objects.get_or_create(
+                    ingredient=current_ingredient,
+                    amount=ingredient_amount,
+                )
+            lst.append(ingredient_recipe)
+        recipe.ingredients.set(lst)
 
         return recipe
 
@@ -167,10 +188,11 @@ class RecipeSrializer(serializers.ModelSerializer):
 
         if 'ingredients' in self.initial_data:
             recipe = Recipe.objects.get(id=instance.id)
-            IngredientRecipes.objects.filter(recipe=recipe).delete()
+
+            lst = []
+            instance.ingredients.set(lst)
 
             ingredients = self.initial_data.pop('ingredients')
-            lst = []
 
             for ingredient in ingredients:
 
@@ -182,11 +204,13 @@ class RecipeSrializer(serializers.ModelSerializer):
                     pk=ingredient_id
                 )
 
-                IngredientRecipes.objects.create(
+                ingredient_recipe, created= IngredientAmount.objects.get_or_create(
                     ingredient=current_ingredient,
                     amount=ingredient_amount,
-                    recipe=recipe
                 )
+                lst.append(ingredient_recipe)
+
+            recipe.ingredients.set(lst)
 
         instance.save()
         return instance
