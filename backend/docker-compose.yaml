@@ -8,7 +8,7 @@ services:
     env_file:
       - ./.env
   backend:
-    build: .
+    image: auxon/foodgram_backend:latest
     restart: always
     volumes:
       - static_value:/app/static/
