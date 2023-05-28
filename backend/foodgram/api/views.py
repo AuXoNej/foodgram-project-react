@@ -89,6 +89,8 @@ def subscribe(request, author_id):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(('POST', 'DELETE'))
 @permission_classes((IsAuthenticated,))
@@ -112,6 +114,8 @@ def favorite(request, recipe_id):
         Favourite.objects.filter(recipe=recipe).delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(('POST', 'DELETE'))
@@ -138,6 +142,8 @@ def shopping_cart(request, recipe_id):
         ShoppingCart.objects.filter(user=user, recipe=recipe).delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(('GET',))
