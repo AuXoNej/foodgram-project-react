@@ -53,5 +53,5 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest
-          context: api_yamdb
+          context: foodgram_backend
           file: backend/Dockerfile
