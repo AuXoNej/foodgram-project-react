@@ -100,7 +100,7 @@ class RecipeSrializer(serializers.ModelSerializer):
                 )
             )
             amount = model_to_dict(ingredients)['amount']
-            
+
             ingredients_recipes.append(
                 dict(
                     list(
@@ -158,10 +158,12 @@ class RecipeSrializer(serializers.ModelSerializer):
                 Ingredient.objects,
                 pk=ingredient_id
             )
-            ingredient_recipe, created= IngredientAmount.objects.get_or_create(
+            ingredient_recipe, created = (
+                IngredientAmount.objects.get_or_create(
                     ingredient=current_ingredient,
                     amount=ingredient_amount,
                 )
+            )
             lst.append(ingredient_recipe)
         recipe.ingredients.set(lst)
 
@@ -204,9 +206,11 @@ class RecipeSrializer(serializers.ModelSerializer):
                     pk=ingredient_id
                 )
 
-                ingredient_recipe, created= IngredientAmount.objects.get_or_create(
-                    ingredient=current_ingredient,
-                    amount=ingredient_amount,
+                ingredient_recipe, created = (
+                    IngredientAmount.objects.get_or_create(
+                        ingredient=current_ingredient,
+                        amount=ingredient_amount,
+                    )
                 )
                 lst.append(ingredient_recipe)
 

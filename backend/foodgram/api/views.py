@@ -80,7 +80,7 @@ def subscribe(request, author_id):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    elif request.method == 'DELETE':
+    if request.method == 'DELETE':
         if not Subscription.objects.filter(subscribing=subscribing).exists():
             raise exceptions.ValidationError(
                 'Вы не подписаны на этого пользователя')
@@ -105,7 +105,7 @@ def favorite(request, recipe_id):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    elif request.method == 'DELETE':
+    if request.method == 'DELETE':
         if not Favourite.objects.filter(recipe=recipe).exists():
             raise exceptions.ValidationError('Рецепт не в избранном')
 
@@ -131,7 +131,7 @@ def shopping_cart(request, recipe_id):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    elif request.method == 'DELETE':
+    if request.method == 'DELETE':
         if not ShoppingCart.objects.filter(user=user, recipe=recipe).exists():
             raise exceptions.ValidationError('Рецепт не в списке покупок')
 

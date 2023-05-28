@@ -57,6 +57,7 @@ class IngredientAmount(models.Model):
     def __str__(self):
         return self.ingredient.name
 
+
 class Recipe(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
