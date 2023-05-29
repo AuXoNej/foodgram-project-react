@@ -1,18 +1,26 @@
 from django.contrib import admin
 
-from .models import (Favourite, Ingredient, Recipe, ShoppingCart, Subscription,
-                     Tag)
+from .models import (
+    Favourite,
+    Ingredient,
+    IngredientAmount,
+    Recipe,
+    ShoppingCart,
+    Subscription,
+    Tag
+)
 
 admin.site.register(Tag)
 admin.site.register(Ingredient)
 admin.site.register(Subscription)
 admin.site.register(Favourite)
 admin.site.register(ShoppingCart)
+admin.site.register(IngredientAmount)
 
 
-class RecipeIngredient(admin.TabularInline):
-    model = Recipe.ingredients.through
-    extra = 1
+#class RecipeIngredient(admin.TabularInline):
+#    model = IngredientAmount.ingredient.through
+#    extra = 1
 
 
 class RecipeTags(admin.TabularInline):
@@ -26,4 +34,4 @@ class IngredientAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     list_filter = ('name', 'author__username', 'tags')
     search_fields = ('name',)
-    inlines = (RecipeIngredient, RecipeTags)
+    inlines = (RecipeTags,)
