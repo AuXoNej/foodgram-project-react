@@ -45,28 +45,12 @@ class Ingredient(models.Model):
         return self.name
 
 
-class IngredientAmount(models.Model):
-    ingredient = models.ForeignKey(
-        Ingredient, on_delete=models.CASCADE)
-    amount = models.PositiveSmallIntegerField(
-        validators=[
-            MinValueValidator(1)
-        ]
-    )
-
-    def __str__(self):
-        return self.ingredient.name
-
-
 class Recipe(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name='recipes',
         verbose_name='автор'
     )
-    ingredients = models.ManyToManyField(
-        IngredientAmount,
-        verbose_name='ингридиент')
 
     tags = models.ManyToManyField(
         Tag,
@@ -92,6 +76,22 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+
+class IngredientAmount(models.Model):
+    ingredient = models.ForeignKey(
+        Ingredient, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE)
+    amount = models.PositiveSmallIntegerField(
+        validators=[
+            MinValueValidator(1)
+        ]
+    )
+
+    def __str__(self):
+        return self.ingredient.name
 
 
 class Subscription(models.Model):
