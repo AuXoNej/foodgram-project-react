@@ -75,7 +75,7 @@ class RecipeSrializer(serializers.ModelSerializer):
 
     def get_ingredients(self, instance):
         ingredients_recipes = []
-        for ingredients in instance.ingredients.all():
+        for ingredients in IngredientAmount.objects.filter(recipe=instance):
             ingredient = model_to_dict(
                 Ingredient.objects.get(
                     id=model_to_dict(ingredients)['ingredient']
@@ -140,14 +140,12 @@ class RecipeSrializer(serializers.ModelSerializer):
                 Ingredient.objects,
                 pk=ingredient_id
             )
-            ingredient_recipe, created = (
-                IngredientAmount.objects.get_or_create(
-                    ingredient=current_ingredient,
-                    amount=ingredient_amount,
-                )
+
+            IngredientAmount.objects.create(
+                ingredient=current_ingredient,
+                recipe=recipe,
+                amount=ingredient_amount,
             )
-            lst.append(ingredient_recipe)
-        recipe.ingredients.set(lst)
 
         return recipe
 
