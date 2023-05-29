@@ -171,7 +171,7 @@ class RecipeSrializer(serializers.ModelSerializer):
         if 'ingredients' in self.initial_data:
             recipe = Recipe.objects.get(id=instance.id)
 
-            IngredientAmount.objects.delete(recipe=instance)
+            IngredientAmount.objects.filter(recipe=instance).delete()
 
             ingredients = self.initial_data.pop('ingredients')
 
