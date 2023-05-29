@@ -186,9 +186,9 @@ class RecipeSrializer(serializers.ModelSerializer):
                 )
 
                 IngredientAmount.objects.get_or_create(
-                        ingredient=current_ingredient,
-                        recipe=recipe,
-                        amount=ingredient_amount,
+                    ingredient=current_ingredient,
+                    recipe=recipe,
+                    amount=ingredient_amount,
                 )
 
         instance.save()
