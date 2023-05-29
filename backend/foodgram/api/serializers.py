@@ -74,24 +74,6 @@ class RecipeSrializer(serializers.ModelSerializer):
         )
 
     def get_ingredients(self, instance):
-        """
-        ingredients_recipes = []
-        for ingredients in instance.ingredients.all():
-            amount = model_to_dict(
-                instance.ingredient_recipes.get(
-                    ingredient=model_to_dict(ingredients)['id']
-                )
-            )['amount']
-            ingredients_recipes.append(
-                dict(
-                    list(
-                        model_to_dict(ingredients).items()
-                    ) + list(
-                        {'amount': amount}.items()
-                    )
-                )
-            )
-            """
         ingredients_recipes = []
         for ingredients in instance.ingredients.all():
             ingredient = model_to_dict(
