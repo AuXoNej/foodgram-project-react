@@ -1,14 +1,7 @@
 from django.contrib import admin
 
-from .models import (
-    Favourite,
-    Ingredient,
-    IngredientAmount,
-    Recipe,
-    ShoppingCart,
-    Subscription,
-    Tag
-)
+from .models import (Favourite, Ingredient, IngredientAmount, Recipe,
+                     ShoppingCart, Subscription, Tag)
 
 admin.site.register(Tag)
 admin.site.register(Ingredient)
@@ -16,11 +9,6 @@ admin.site.register(Subscription)
 admin.site.register(Favourite)
 admin.site.register(ShoppingCart)
 admin.site.register(IngredientAmount)
-
-
-#class RecipeIngredient(admin.TabularInline):
-#    model = IngredientAmount.ingredient.through
-#    extra = 1
 
 
 class RecipeTags(admin.TabularInline):
