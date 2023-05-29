@@ -171,8 +171,7 @@ class RecipeSrializer(serializers.ModelSerializer):
         if 'ingredients' in self.initial_data:
             recipe = Recipe.objects.get(id=instance.id)
 
-            lst = []
-            instance.ingredients.set(lst)
+            IngredientAmount.objects.delete(recipe=instance)
 
             ingredients = self.initial_data.pop('ingredients')
 
@@ -186,15 +185,11 @@ class RecipeSrializer(serializers.ModelSerializer):
                     pk=ingredient_id
                 )
 
-                ingredient_recipe, created = (
-                    IngredientAmount.objects.get_or_create(
+                IngredientAmount.objects.get_or_create(
                         ingredient=current_ingredient,
+                        recipe=recipe,
                         amount=ingredient_amount,
-                    )
                 )
-                lst.append(ingredient_recipe)
-
-            recipe.ingredients.set(lst)
 
         instance.save()
         return instance
