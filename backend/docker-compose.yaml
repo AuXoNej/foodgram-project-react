@@ -20,7 +20,7 @@ services:
       - ./.env
 
   frontend:
-    image: auxon/foodgram_frontend:latest
+    image: auxon/foodgram_frontend:v1.0
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
