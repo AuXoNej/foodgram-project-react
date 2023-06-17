@@ -6,7 +6,7 @@ from recipes.models import (Favourite, Ingredient, Recipe, ShoppingCart,
 from rest_framework import filters, status
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.filters import SearchFilter
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import exceptions
 from rest_framework.viewsets import ModelViewSet
@@ -35,7 +35,7 @@ class TagViewSet(RetrieveListViewSet):
     """Вью для работы с тегами."""
 
     queryset = Tag.objects.all()
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     serializer_class = TagSerializer
 
 
