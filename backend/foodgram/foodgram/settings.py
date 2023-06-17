@@ -16,6 +16,8 @@ DEBUG = os.getenv('DEBUG', default=False)
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
 AUTH_USER_MODEL = 'users.User'
 
 
