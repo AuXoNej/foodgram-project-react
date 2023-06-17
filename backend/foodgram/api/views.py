@@ -32,7 +32,6 @@ class RecipeViewSet(ModelViewSet):
 
     """
     filter_backends = (SearchFilter, DjangoFilterBackend)
-    
     filterset_fields = ('tags', )
     """
     filter_backends = (SearchFilter, DjangoFilterBackend)
