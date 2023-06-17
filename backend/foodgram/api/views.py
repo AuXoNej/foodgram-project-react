@@ -29,10 +29,13 @@ class RecipeViewSet(ModelViewSet):
     serializer_class = RecipeSrializer
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
     pagination_class = None
-    filter_backends = (SearchFilter, DjangoFilterBackend)
 
+    filter_backends = (DjangoFilterBackend, )
     filterset_fields = ('tags', )
+    """
+    filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ('tags', )
+    """
 
 
 class TagViewSet(RetrieveListViewSet):
