@@ -28,9 +28,10 @@ class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSrializer
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
+    pagination_class = None
     filter_backends = (SearchFilter, DjangoFilterBackend)
 
-    filterset_fields = ('tags', 'is_favorited')
+    filterset_fields = ('tags', )
     search_fields = ('tags', )
 
 
