@@ -30,11 +30,8 @@ class RecipeViewSet(ModelViewSet):
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
     """
     pagination_class = None
-
-    
     filter_backends = (SearchFilter, DjangoFilterBackend)
     filterset_fields = ('tags', )
-    
     filter_backends = (SearchFilter, DjangoFilterBackend)
     filterset_fields = ('tags')
     search_fields = ('tags', )
