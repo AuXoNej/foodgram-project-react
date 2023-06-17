@@ -37,6 +37,7 @@ class TagViewSet(RetrieveListViewSet):
 
     queryset = Tag.objects.all()
     permission_classes = (IsAuthenticatedOrReadOnly, )
+    pagination_class = None
     serializer_class = TagSerializer
 
 
@@ -46,6 +47,7 @@ class IngredientViewSet(RetrieveListViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
+    pagination_class = None
     filter_backends = (SearchFilter,)
 
     search_fields = ('name', )
