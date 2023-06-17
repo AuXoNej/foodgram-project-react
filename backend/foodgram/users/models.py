@@ -22,11 +22,13 @@ class User(AbstractUser):
     first_name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME,
         verbose_name='Имя',
+        validators=[UnicodeUsernameValidator]
     )
 
     last_name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME,
         verbose_name='Фамилия',
+        validators=[UnicodeUsernameValidator]
     )
 
     USERNAME_FIELD = 'email'

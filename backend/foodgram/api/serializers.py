@@ -4,6 +4,7 @@ from drf_extra_fields.fields import Base64ImageField
 from recipes.models import (Favourite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Subscription, Tag)
 from rest_framework import serializers
+from rest_framework.views import exceptions
 from users.models import User
 
 
@@ -118,6 +119,10 @@ class RecipeSrializer(serializers.ModelSerializer):
         tags = self.initial_data.pop('tags')
         ingredients = self.initial_data.pop('ingredients')
 
+        if len(ingredients) == 0:
+            raise exceptions.ValidationError(
+                'Нельзя создать рецепт без ингридиентов')
+
         recipe = Recipe.objects.create(
             author=self.context['request'].user, **validated_data)
 
@@ -174,6 +179,10 @@ class RecipeSrializer(serializers.ModelSerializer):
             IngredientAmount.objects.filter(recipe=instance).delete()
 
             ingredients = self.initial_data.pop('ingredients')
+
+            if len(ingredients) == 0:
+                raise exceptions.ValidationError(
+                    'Нельзя создать рецепт без ингридиентов')
 
             for ingredient in ingredients:
 

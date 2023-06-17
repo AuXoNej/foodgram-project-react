@@ -35,6 +35,7 @@ class TagViewSet(RetrieveListViewSet):
     """Вью для работы с тегами."""
 
     queryset = Tag.objects.all()
+    permission_classes = (IsAuthenticated, )
     serializer_class = TagSerializer
 
 
