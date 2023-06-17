@@ -1,7 +1,7 @@
 from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from recipes.models import (Favourite, Ingredient, Recipe, ShoppingCart,
+from recipes.models import (Favourite, Ingredient, IngredientAmount, Recipe, ShoppingCart,
                             Subscription, Tag)
 from rest_framework import filters, status
 from rest_framework.decorators import action, api_view, permission_classes
@@ -158,13 +158,9 @@ def download_shopping_cart(request):
     ingredients_recipe = {}
     for shopping_cart in shopping_carts:
         recipe = shopping_cart.recipe
-
-        for ingredient in recipe.ingredients.all():
-            amount = model_to_dict(
-                recipe.ingredient_recipes.get(
-                    ingredient=model_to_dict(ingredient)['id']
-                )
-            )['amount']
+    
+        for ingredient in IngredientAmount.objects.filter(recipe=recipe):
+            amount = ingredient['amount']
             measurement_unit = model_to_dict(
                 Ingredient.objects.get(
                     id=model_to_dict(ingredient)['id']
