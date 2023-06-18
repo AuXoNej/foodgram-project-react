@@ -6,7 +6,7 @@ class RecipeFilter(FilterSet):
     author = filters.CharFilter(
         field_name='author__id'
     )
-    tags = filters.CharFilter(
+    tags = filters.ModelMultipleChoiceFilter(
         field_name='tags__slug',
         distinct=True
     )
