@@ -15,7 +15,6 @@ from rest_framework.viewsets import ModelViewSet
 from users.models import User
 
 from .mixins import RetrieveListViewSet
-
 from .serializers import (FavouriteSerializer, IngredientSerializer,
                           RecipeSrializer, ShoppingCartSerializer,
                           SubscriptionListSerializer, SubscriptionSerializer,
