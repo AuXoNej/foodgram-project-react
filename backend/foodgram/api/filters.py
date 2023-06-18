@@ -1,4 +1,4 @@
-from django_filters.rest_framework import FilterSet, filters, ModelMultipleChoiceFilter
+from django_filters.rest_framework import FilterSet, filters
 from recipes.models import Recipe, Tag
 
 
@@ -8,8 +8,8 @@ class RecipeFilter(FilterSet):
     )
     tags = filters.ModelMultipleChoiceFilter(
         field_name='tags__slug',
-        to_field_name = 'slug',
-        queryset = Tag.objects.all()
+        to_field_name='slug',
+        queryset=Tag.objects.all()
     )
     is_favorited = filters.BooleanFilter(
         method='get_queryset_favorited'
