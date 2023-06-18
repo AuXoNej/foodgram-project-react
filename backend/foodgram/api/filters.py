@@ -8,7 +8,7 @@ class RecipeFilter(FilterSet):
     )
     tags = filters.CharFilter(
         field_name='tags__slug',
-        lookup_expr='in'
+        distinct=True
     )
     is_favorited = filters.BooleanFilter(
         method='get_queryset_favorited'
