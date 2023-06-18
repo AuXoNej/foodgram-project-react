@@ -14,6 +14,7 @@ from rest_framework.views import exceptions
 from rest_framework.viewsets import ModelViewSet
 from users.models import User
 
+from .filters import RecipeFilter
 from .mixins import RetrieveListViewSet
 from .permissions import IsAuthorOrAuthenticatedCreateOrReadOnly
 from .serializers import (FavouriteSerializer, IngredientSerializer,
@@ -29,7 +30,8 @@ class RecipeViewSet(ModelViewSet):
     serializer_class = RecipeSrializer
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
     filter_backends = (SearchFilter, DjangoFilterBackend)
-    filterset_fields = ('tags',)
+
+    filterset_class = RecipeFilter
     search_fields = ('tags', )
 
 
