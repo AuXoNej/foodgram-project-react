@@ -3,6 +3,12 @@ from recipes.models import Recipe
 
 
 class RecipeFilter(FilterSet):
+    author = filters.CharFilter(
+        field_name='author__id'
+    )
+    tags = filters.CharFilter(
+        field_name='tags__slug'
+    )
     is_favorited = filters.BooleanFilter(
         method='get_queryset_favorited'
     )
@@ -18,4 +24,4 @@ class RecipeFilter(FilterSet):
 
     class Meta:
         model = Recipe
-        fields = ('is_favorited', 'is_in_shopping_cart',)
+        fields = ('author', 'is_favorited', 'is_in_shopping_cart',)
