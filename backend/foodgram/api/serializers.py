@@ -47,13 +47,17 @@ class RecipeSrializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
     ingredients = serializers.SerializerMethodField()
 
-    def get_is_favorited(self, instance):
+    def get_is_favorited(self, obj):
         user = self.context.get('request').user
-        return instance.recipe_is_favourite.filter(user=user).exists()
+        if user.id:
+            return obj.recipe_is_favourite.filter(user=user).exists()
+        return False
 
-    def get_is_in_shopping_cart(self, instance):
+    def get_is_in_shopping_cart(self, obj):
         user = self.context.get('request').user
-        return instance.recipe_shopping_cart.filter(user=user).exists()
+        if user.id:
+            return obj.recipe_shopping_cart.filter(user=user).exists()
+        return False
 
     def get_tags(self, instance):
         tags_recipes = []
