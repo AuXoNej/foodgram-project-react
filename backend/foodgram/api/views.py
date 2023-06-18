@@ -3,10 +3,9 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from recipes.models import (Favourite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Subscription, Tag)
-from rest_framework import filters, status
+from rest_framework import filters, pagination, status
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.filters import SearchFilter
-from rest_framework import pagination
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
@@ -29,9 +28,8 @@ class RecipeViewSet(ModelViewSet):
     serializer_class = RecipeSrializer
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
     pagination_class = pagination.PageNumberPagination
+
     """
-    
-    
     from django_filters.rest_framework import DjangoFilterBackend
     pagination_class = None
     filter_backends = (SearchFilter, DjangoFilterBackend)
