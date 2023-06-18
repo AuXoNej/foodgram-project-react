@@ -15,7 +15,7 @@ from rest_framework.viewsets import ModelViewSet
 from users.models import User
 
 from .mixins import RetrieveListViewSet
-from .permissions import IsAuthorOrAuthenticatedCreateOrReadOnly
+
 from .serializers import (FavouriteSerializer, IngredientSerializer,
                           RecipeSrializer, ShoppingCartSerializer,
                           SubscriptionListSerializer, SubscriptionSerializer,
@@ -27,8 +27,11 @@ class RecipeViewSet(ModelViewSet):
 
     queryset = Recipe.objects.all()
     serializer_class = RecipeSrializer
+    permission_classes(IsAuthenticatedOrReadOnly, )
+    """
+    from .permissions import IsAuthorOrAuthenticatedCreateOrReadOnly
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
-
+    """
     filter_backends = (SearchFilter, DjangoFilterBackend)
     filterset_fields = ('tags',)
     search_fields = ('tags', )
