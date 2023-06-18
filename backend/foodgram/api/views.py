@@ -28,7 +28,6 @@ class RecipeViewSet(ModelViewSet):
     serializer_class = RecipeSrializer
     """
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
-    
     from django_filters.rest_framework import DjangoFilterBackend
     pagination_class = None
     filter_backends = (SearchFilter, DjangoFilterBackend)
