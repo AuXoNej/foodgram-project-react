@@ -15,5 +15,5 @@ class IsAuthorOrAuthenticatedCreateOrReadOnly(BasePermission):
         return (
             request.method in SAFE_METHODS
             or request.user.is_authenticated
-            and (request.user.id == obj.author.id)
+            and (request.user == obj.author)
         )
