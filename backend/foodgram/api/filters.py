@@ -11,10 +11,10 @@ class RecipeFilter(FilterSet):
     )
 
     def get_queryset_favorited(self, queryset, name, value):
-        return queryset.filter(favourite__user=self.request.user)
+        return queryset.filter(recipe_is_favourite__user=self.request.user)
 
     def get_queryset_shopping_cart(self, queryset, name, value):
-        return queryset.filter(shoppingcart__user=self.request.user)
+        return queryset.filter(recipe_shopping_cart__user=self.request.user)
 
     class Meta:
         model = Recipe
