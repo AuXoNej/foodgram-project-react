@@ -85,7 +85,7 @@ jobs:
             echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
             sudo kill -9 `sudo lsof -t -i:80`
             sudo kill -9 `sudo lsof -t -i:8000`
-            sudo docker-compose up -d
+            sudo docker-compose up -d --build
             #sudo docker-compose exec backend python manage.py migrate --no-input
             #sudo docker-compose exec backend python manage.py collectstatic --no-input
   
