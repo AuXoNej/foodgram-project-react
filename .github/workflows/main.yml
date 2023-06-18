@@ -73,7 +73,7 @@ jobs:
             sudo docker-compose rm backend
             sudo docker container stop foodgram_backend_backend_1
             sudo docker container rm foodgram_backend_backend_1
-            sudo docker image rm auxon/foodgram_backend:latest
+            sudo docker image rm ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest 
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
