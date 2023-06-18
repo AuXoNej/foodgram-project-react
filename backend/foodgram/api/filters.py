@@ -9,7 +9,7 @@ class RecipeFilter(FilterSet):
     is_in_shopping_cart = filters.BooleanFilter(
         method='get_queryset_shopping_cart'
     )
-        
+
     def get_queryset_favorited(self, queryset, name, value):
         return queryset.filter(favourite__user=self.request.user)
 
