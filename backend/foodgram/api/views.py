@@ -1,6 +1,7 @@
 from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from recipes.models import (Favourite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Subscription, Tag)
 from rest_framework import filters, pagination, status
@@ -27,17 +28,10 @@ class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSrializer
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
-    pagination_class = pagination.PageNumberPagination
-
-    """
-    from django_filters.rest_framework import DjangoFilterBackend
-    pagination_class = None
+    
     filter_backends = (SearchFilter, DjangoFilterBackend)
-    filterset_fields = ('tags', )
-    filter_backends = (SearchFilter, DjangoFilterBackend)
-    filterset_fields = ('tags')
+    filterset_fields = ('tags',)
     search_fields = ('tags', )
-    """
 
 
 class TagViewSet(RetrieveListViewSet):
