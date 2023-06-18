@@ -14,7 +14,6 @@ from rest_framework.viewsets import ModelViewSet
 from users.models import User
 
 from .mixins import RetrieveListViewSet
-from .permissions import IsAuthorOrAuthenticatedCreateOrReadOnly
 from .serializers import (FavouriteSerializer, IngredientSerializer,
                           RecipeSrializer, ShoppingCartSerializer,
                           SubscriptionListSerializer, SubscriptionSerializer,
@@ -27,6 +26,7 @@ class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSrializer
     """
+    from .permissions import IsAuthorOrAuthenticatedCreateOrReadOnly
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
     from django_filters.rest_framework import DjangoFilterBackend
     pagination_class = None
