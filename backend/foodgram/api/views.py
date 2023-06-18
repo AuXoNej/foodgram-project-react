@@ -32,8 +32,6 @@ class RecipeViewSet(ModelViewSet):
     filter_backends = (SearchFilter, DjangoFilterBackend)
 
     filterset_class = RecipeFilter
-    filter_fields = ('tags__slug', 'author__id', )
-    search_fields = ('tags__slug', )
 
 
 class TagViewSet(RetrieveListViewSet):
