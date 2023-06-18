@@ -33,7 +33,7 @@ class RecipeViewSet(ModelViewSet):
 
     filterset_class = RecipeFilter
     filter_fields = ('tags__slug', )
-    search_fields = ('tags', )
+    search_fields = ('tags__slug', )
 
 
 class TagViewSet(RetrieveListViewSet):
