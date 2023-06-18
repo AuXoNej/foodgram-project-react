@@ -26,7 +26,7 @@ class RecipeViewSet(ModelViewSet):
 
     queryset = Recipe.objects.all()
     serializer_class = RecipeSrializer
-    permission_classes(AllowAny, )
+    permission_classes = (AllowAny, )
     """
     from .permissions import IsAuthorOrAuthenticatedCreateOrReadOnly
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
