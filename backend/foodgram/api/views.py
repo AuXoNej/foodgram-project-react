@@ -165,11 +165,13 @@ def download_shopping_cart(request):
 
         for ingredient in IngredientAmount.objects.filter(recipe=recipe):
             amount = ingredient['amount']
+
             measurement_unit = model_to_dict(
                 Ingredient.objects.get(
-                    id=model_to_dict(ingredient)['id']
+                    id=ingredient.ingredient.id
                 )
             )['measurement_unit']
+            
             if model_to_dict(ingredient)['name'] in ingredients_recipe.keys():
                 ingredients_recipe[model_to_dict(
                     ingredient)['name']][1] += amount
