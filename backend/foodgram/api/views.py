@@ -174,7 +174,6 @@ def download_shopping_cart(request):
             if model_to_dict(ingredient)['name'] in ingredients_recipe.keys():
                 ingredients_recipe[model_to_dict(
                     ingredient)['name']][1] += amount
-
             else:
                 ingredients_recipe[model_to_dict(ingredient)['name']] = [
                     measurement_unit, amount]
