@@ -164,7 +164,7 @@ def download_shopping_cart(request):
         recipe = shopping_cart.recipe
 
         for ingredient in IngredientAmount.objects.filter(recipe=recipe):
-            amount = ingredient['amount']
+            amount = model_to_dict(ingredient)['amount']
 
             measurement_unit = model_to_dict(
                 Ingredient.objects.get(
