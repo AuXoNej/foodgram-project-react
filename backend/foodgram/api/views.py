@@ -163,19 +163,18 @@ def download_shopping_cart(request):
     for shopping_cart in shopping_carts:
         recipe = shopping_cart.recipe
 
-        for ingredient in IngredientAmount.objects.filter(recipe=recipe):
-            amount = model_to_dict(ingredient)['amount']
+        for ingredient_amount in IngredientAmount.objects.filter(recipe=recipe):
+            amount = ingredient_amount.amount
 
             measurement_unit = model_to_dict(
                 Ingredient.objects.get(
-                    id=ingredient.ingredient.id
+                    id=ingredient_amount.ingredient.id
                 )
             )['measurement_unit']
-            if model_to_dict(ingredient)['name'] in ingredients_recipe.keys():
-                ingredients_recipe[model_to_dict(
-                    ingredient)['name']][1] += amount
+            if ingredient_amount.ingredient.name in ingredients_recipe.keys():
+                ingredients_recipe[ingredient_amount.ingredient.name][1] += amount
             else:
-                ingredients_recipe[model_to_dict(ingredient)['name']] = [
+                ingredients_recipe[ingredient_amount.ingredient.name] = [
                     measurement_unit, amount]
 
     shopping_list = ''
