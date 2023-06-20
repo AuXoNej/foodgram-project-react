@@ -63,9 +63,9 @@ class SubscriptionViewSet(ModelViewSet):
     filter_backends = (SearchFilter,)
     search_fields = ('=subscribing__username',)
 
-    def get_queryset(self, request):
+    def get_queryset(self):
         return Subscription.objects.filter(
-            user=request.user
+            user=self.request.user
         )
 
 
