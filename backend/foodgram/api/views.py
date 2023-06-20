@@ -14,7 +14,7 @@ from rest_framework.views import exceptions
 from rest_framework.viewsets import ModelViewSet
 from users.models import User
 
-from .filters import RecipeFilter, SubscriptionFilter
+from .filters import RecipeFilter
 from .mixins import RetrieveListViewSet
 from .permissions import IsAuthorOrAuthenticatedCreateOrReadOnly
 from .serializers import (FavouriteSerializer, IngredientSerializer,
@@ -61,8 +61,8 @@ class SubscriptionViewSet(ModelViewSet):
     serializer_class = SubscriptionListSerializer
     permission_classes = (IsAuthenticated, )
 
-    filter_backends = (SearchFilter, DjangoFilterBackend)
-    filterset_class = SubscriptionFilter
+    filter_backends = (SearchFilter,)
+    search_fields = ('=subscribing__username',)
 
 
 @api_view(('POST', 'DELETE'))
