@@ -242,10 +242,7 @@ class SubscriptionListSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
 
         recipes = []
-        for recipe in Subscription.objects.filter(
-            user=self.context.get('request').user,
-            subscribing=instance.subscribing
-        ):
+        for recipe in instance.subscribing.recipes.all():
 
             if model_to_dict(recipe)['image']:
                 image = self.context.get('request').build_absolute_uri(

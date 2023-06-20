@@ -57,12 +57,16 @@ class IngredientViewSet(RetrieveListViewSet):
 
 @action(detail=False, methods=('GET',))
 class SubscriptionViewSet(ModelViewSet):
-    queryset = Subscription.objects.all()
     serializer_class = SubscriptionListSerializer
     permission_classes = (IsAuthenticated, )
 
     filter_backends = (SearchFilter,)
     search_fields = ('=subscribing__username',)
+
+    def get_queryset(self):
+        return Subscription.objects.filter(
+            user=self.context.get('request').user
+        )
 
 
 @api_view(('POST', 'DELETE'))
