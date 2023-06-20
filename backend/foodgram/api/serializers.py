@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context.get('request').user
-        return Subscription.objects.filter(subscribing=obj, user=user).exists()
+        return Subscription.objects.filter(user=user, subscribing=obj).exists()
 
     class Meta:
         model = User
@@ -265,7 +265,7 @@ class SubscriptionListSerializer(serializers.ModelSerializer):
             'username': instance.subscribing.username,
             'first_name': instance.subscribing.first_name,
             'last_name': instance.subscribing.last_name,
-            'is_subscribed': True,
+            'is_subscribed': instance.subscribing.is_subscribed,
             'recipes': recipes,
             'recipes_count': Recipe.objects.filter(
                 author=instance.subscribing
