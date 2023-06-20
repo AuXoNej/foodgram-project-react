@@ -245,7 +245,7 @@ class SubscriptionListSerializer(serializers.ModelSerializer):
         for recipe in Subscription.objects.filter(
             user=self.context.get('request').user,
             subscribing=instance.subscribing
-        ).exists():
+        ):
 
             if model_to_dict(recipe)['image']:
                 image = self.context.get('request').build_absolute_uri(
