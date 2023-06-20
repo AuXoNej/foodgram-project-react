@@ -265,7 +265,10 @@ class SubscriptionListSerializer(serializers.ModelSerializer):
             'username': instance.subscribing.username,
             'first_name': instance.subscribing.first_name,
             'last_name': instance.subscribing.last_name,
-            'is_subscribed': instance.subscribing.is_subscribed,
+            'is_subscribed': Subscription.objects.filter(
+                user=self.context.get('request').user,
+                subscribing=instance.subscribing
+            ).exists(),
             'recipes': recipes,
             'recipes_count': Recipe.objects.filter(
                 author=instance.subscribing
