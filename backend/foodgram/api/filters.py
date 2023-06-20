@@ -27,3 +27,12 @@ class RecipeFilter(FilterSet):
     class Meta:
         model = Recipe
         fields = ('is_favorited', 'is_in_shopping_cart',)
+
+
+class SubscriptionFilter(FilterSet):
+    subscribing = filters.BooleanFilter(
+        method='get_queryset_subscribing'
+    )
+
+    def get_queryset_subscribing(self, queryset, name, value):
+        return queryset.filter(user__is_subscribing=True)
