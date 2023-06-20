@@ -16,19 +16,19 @@ class User(AbstractUser):
     username = models.CharField(
         max_length=settings.MAX_LENGTH_NAME,
         unique=True,
-        validators=[UnicodeUsernameValidator,]
+        validators=[UnicodeUsernameValidator, ]
     )
 
     first_name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME,
         verbose_name='Имя',
-        validators=[UnicodeUsernameValidator,]
+        validators=[UnicodeUsernameValidator, ]
     )
 
     last_name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME,
         verbose_name='Фамилия',
-        validators=[UnicodeUsernameValidator,]
+        validators=[UnicodeUsernameValidator, ]
     )
 
     USERNAME_FIELD = 'email'
