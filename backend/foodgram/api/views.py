@@ -34,8 +34,8 @@ class RecipeViewSet(ModelViewSet):
     filterset_class = RecipeFilter
 
     @action(detail=True, methods=['POST', 'DELETE'])
-    def favorite(self, request, recipe_id):
-        recipe = get_object_or_404(Recipe, id=recipe_id)
+    def favorite(self, request, pk):
+        recipe = get_object_or_404(Recipe, id=pk)
 
         if request.method == 'POST':
             if Favourite.objects.filter(recipe=recipe).exists():
