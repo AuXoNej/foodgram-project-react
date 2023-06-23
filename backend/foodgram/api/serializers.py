@@ -150,11 +150,13 @@ class RecipeSrializer(serializers.ModelSerializer):
                 pk=ingredient_id
             )
 
-            IngredientAmount.objects.create(
+            lst.append(IngredientAmount(
                 ingredient=current_ingredient,
                 recipe=recipe,
                 amount=ingredient_amount,
-            )
+            ))
+
+        IngredientAmount.objects.bulk_create(lst)
 
         return recipe
 
@@ -188,6 +190,7 @@ class RecipeSrializer(serializers.ModelSerializer):
                 raise exceptions.ValidationError(
                     'Нельзя создать рецепт без ингридиентов')
 
+            lst = []
             for ingredient in ingredients:
 
                 ingredient_id = ingredient['id']
@@ -198,11 +201,20 @@ class RecipeSrializer(serializers.ModelSerializer):
                     pk=ingredient_id
                 )
 
-                IngredientAmount.objects.get_or_create(
-                    ingredient=current_ingredient,
-                    recipe=recipe,
-                    amount=ingredient_amount,
-                )
+                if not IngredientAmount.objects.filter(
+                        ingredient=current_ingredient,
+                        recipe=recipe,
+                        amount=ingredient_amount).exists():
+
+                    lst.append(
+                        IngredientAmount(
+                            ingredient=current_ingredient,
+                            recipe=recipe,
+                            amount=ingredient_amount,
+                        )
+                    )
+
+            IngredientAmount.objects.bulk_create(lst)
 
         instance.save()
         return instance
