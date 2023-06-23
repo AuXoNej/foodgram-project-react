@@ -64,6 +64,34 @@ class RecipeViewSet(ModelViewSet):
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['POST', 'DELETE'])
+    def shopping_cart(self, request, pk):
+        user = request.user
+        recipe = get_object_or_404(Recipe, id=pk)
+
+        if request.method == 'POST':
+            if ShoppingCart.objects.filter(user=user, recipe=recipe).exists():
+                raise exceptions.ValidationError('Рецепт уже в списке покупок')
+
+            serializer = ShoppingCartSerializer(
+                recipe, context={'request': request})
+            ShoppingCart.objects.filter(recipe=recipe).create(
+                user=request.user, recipe=recipe)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        if request.method == 'DELETE':
+            if not ShoppingCart.objects.filter(
+                    user=user,
+                    recipe=recipe).exists():
+                raise exceptions.ValidationError('Рецепт не в списке покупок')
+
+            ShoppingCart.objects.filter(user=user, recipe=recipe).delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class TagViewSet(RetrieveListViewSet):
     """Вью для работы с тегами."""
@@ -128,34 +156,6 @@ def subscribe(request, author_id):
                 'Вы не подписаны на этого пользователя')
 
         Subscription.objects.filter(subscribing=subscribing).delete()
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(('POST', 'DELETE'))
-@permission_classes((IsAuthenticated,))
-def shopping_cart(request, recipe_id):
-    user = request.user
-    recipe = get_object_or_404(Recipe, id=recipe_id)
-
-    if request.method == 'POST':
-        if ShoppingCart.objects.filter(user=user, recipe=recipe).exists():
-            raise exceptions.ValidationError('Рецепт уже в списке покупок')
-
-        serializer = ShoppingCartSerializer(
-            recipe, context={'request': request})
-        ShoppingCart.objects.filter(recipe=recipe).create(
-            user=request.user, recipe=recipe)
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    if request.method == 'DELETE':
-        if not ShoppingCart.objects.filter(user=user, recipe=recipe).exists():
-            raise exceptions.ValidationError('Рецепт не в списке покупок')
-
-        ShoppingCart.objects.filter(user=user, recipe=recipe).delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
