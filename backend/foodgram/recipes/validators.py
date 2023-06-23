@@ -1,10 +1,6 @@
-import re
+from django.core.validators import RegexValidator
 
-from django.core.exceptions import ValidationError
-
-
-def validate_color(value):
-    if not re.search(r'^#([0-9a-fA-F]{3,6})$', value):
-        raise ValidationError(
-            'Не валидный hex-код'
-        )
+validate_color = RegexValidator(
+    r'^#([0-9a-fA-F]{3,6})$',
+    'Не валидный hex-код'
+)
