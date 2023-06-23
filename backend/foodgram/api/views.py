@@ -34,7 +34,7 @@ class RecipeViewSet(ModelViewSet):
     filterset_class = RecipeFilter
 
     @api_view(('POST', 'DELETE'))
-    def favorite(request, recipe_id):
+    def favorite(self, request, recipe_id):
         recipe = get_object_or_404(Recipe, id=recipe_id)
 
         if request.method == 'POST':
@@ -42,7 +42,7 @@ class RecipeViewSet(ModelViewSet):
                 raise exceptions.ValidationError('Рецепт уже в избранном')
 
             serializer = FavouriteSerializer(
-                recipe, 
+                recipe,
                 context={'request': request}
             )
             Favourite.objects.filter(recipe=recipe).create(
