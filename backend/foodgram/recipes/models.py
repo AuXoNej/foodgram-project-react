@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.validators import MinValueValidator, validate_slug
+from django.core.validators import MinValueValidator, validate_slug, validate_unicode_slug
 from django.db import models
 from users.models import User
 
@@ -10,7 +10,7 @@ class Tag(models.Model):
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_TAG,
         unique=True,
-        validators=[validate_slug],
+        validators=[validate_unicode_slug],
         verbose_name='Название тега'
     )
     color = models.CharField(
@@ -182,3 +182,8 @@ class ShoppingCart(models.Model):
         verbose_name='Рецепт',
         help_text='Рецепт в списке покупок у пользователя'
     )
+
+    class Meta:
+        verbose_name = 'Список покупок'
+        verbose_name_plural = 'Списки покупок'
+        ordering = ('recipe',)
