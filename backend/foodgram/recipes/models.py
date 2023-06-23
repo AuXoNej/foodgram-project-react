@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.validators import MinValueValidator, validate_slug
 from django.db import models
 from users.models import User
@@ -7,17 +8,17 @@ from .validators import validate_color
 
 class Tag(models.Model):
     name = models.CharField(
-        max_length=200,
+        max_length=settings.MAX_LENGTH_NAME_TAG,
         unique=True,
         validators=[validate_slug]
     )
     color = models.CharField(
-        max_length=7,
+        max_length=settings.MAX_LENGTH_COLOR_TAG,
         unique=True,
         validators=[validate_color]
     )
     slug = models.SlugField(
-        max_length=200,
+        max_length=settings.MAX_LENGTH_SLUG_TAG,
         unique=True,
         validators=[validate_slug]
     )
@@ -32,10 +33,19 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=200, blank=False)
-    measurement_unit = models.CharField(max_length=200, blank=False)
+    name = models.CharField(
+        max_length=settings.MAX_LENGTH_NAME_INGREDIENT
+    )
+    measurement_unit = models.CharField(
+        max_length=settings.MAX_LENGTH_MEASUREMENT_UNIT_INGREDIENT
+    )
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "measurement_unit"], name="unique_ingredient"
+            ),
+        ]
         verbose_name = 'Ингридиент'
         verbose_name_plural = 'Ингридиенты'
         ordering = ('name',)
@@ -62,11 +72,11 @@ class Recipe(models.Model):
         default=None
     )
 
-    name = models.CharField(max_length=16)
+    name = models.CharField(max_length=settings.MAX_LENGTH_NAME_RECIPE)
     text = models.TextField()
     cooking_time = models.PositiveSmallIntegerField(
         validators=[
-            MinValueValidator(1)
+            MinValueValidator(settings.MIN_COOKING_TIME)
         ]
     )
 
@@ -84,7 +94,7 @@ class IngredientAmount(models.Model):
         Recipe, on_delete=models.CASCADE)
     amount = models.PositiveSmallIntegerField(
         validators=[
-            MinValueValidator(1)
+            MinValueValidator(settings.MIN_AMOUNT)
         ]
     )
 

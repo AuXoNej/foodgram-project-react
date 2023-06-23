@@ -1,3 +1,4 @@
+from django.core.validators import UniqueTogetherValidator
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
@@ -6,6 +7,8 @@ from recipes.models import (Favourite, Ingredient, IngredientAmount, Recipe,
 from rest_framework import serializers
 from rest_framework.views import exceptions
 from users.models import User
+
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -33,6 +36,13 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = ('id', 'name', 'measurement_unit')
+
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Ingredient.objects.all(),
+                fields=['name', 'measurement_unit']
+            )
+        ]
 
 
 class RecipeSrializer(serializers.ModelSerializer):
