@@ -38,7 +38,7 @@ class RecipeViewSet(ModelViewSet):
         recipe = get_object_or_404(Recipe, id=pk)
 
         if request.method == 'POST':
-            if Favourite.objects.filter(recipe=recipe).exists():
+            if Favourite.objects.filter(user=request.user, recipe=recipe).exists():
                 raise exceptions.ValidationError('Рецепт уже в избранном')
 
             serializer = FavouriteSerializer(
@@ -51,10 +51,10 @@ class RecipeViewSet(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == 'DELETE':
-            if not Favourite.objects.filter(recipe=recipe).exists():
+            if not Favourite.objects.filter(user=request.user, recipe=recipe).exists():
                 raise exceptions.ValidationError('Рецепт не в избранном')
 
-            Favourite.objects.filter(recipe=recipe).delete()
+            Favourite.objects.filter(user=request.user, recipe=recipe).delete()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
