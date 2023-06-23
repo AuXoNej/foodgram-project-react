@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.validators import validate_unicode_slug
 from django.db import models
 
 
@@ -23,17 +24,16 @@ class User(AbstractUser):
     first_name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_USER,
         verbose_name='Имя',
-        validators=[UnicodeUsernameValidator()]
+        validators=[validate_unicode_slug]
     )
 
     last_name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_USER,
         verbose_name='Фамилия',
-        validators=[UnicodeUsernameValidator()]
+        validators=[validate_unicode_slug]
     )
 
     USERNAME_FIELD = 'email'
-
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     class Meta:

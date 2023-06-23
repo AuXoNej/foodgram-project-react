@@ -8,6 +8,8 @@ from .validators import validate_color
 
 
 class Tag(models.Model):
+    """Модель тегов."""
+
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_TAG,
         unique=True,
@@ -37,6 +39,8 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
+    """Модель ингридиентов."""
+
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_INGREDIENT,
         verbose_name='Название'
@@ -61,6 +65,8 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
+    """Модель рецептов."""
+
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name='recipes',
@@ -103,6 +109,8 @@ class Recipe(models.Model):
 
 
 class IngredientAmount(models.Model):
+    """Модель ингридиентов рецепта."""
+
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
@@ -126,6 +134,8 @@ class IngredientAmount(models.Model):
 
 
 class Subscription(models.Model):
+    """Модель подписок."""
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -147,6 +157,8 @@ class Subscription(models.Model):
 
 
 class Favourite(models.Model):
+    """Модель избранных рецептов."""
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -169,6 +181,8 @@ class Favourite(models.Model):
 
 
 class ShoppingCart(models.Model):
+    """Модель списка покупок."""
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
