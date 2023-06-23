@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from .views import (IngredientViewSet, RecipeViewSet, SubscriptionViewSet,
-                    TagViewSet, download_shopping_cart, favorite,
+                    TagViewSet, download_shopping_cart,
                     shopping_cart, subscribe)
 
 app_name = 'api'
@@ -23,7 +23,7 @@ urlpatterns = [
     path('users/<int:author_id>/subscribe/', subscribe, name='subscribe'),
     path('recipes/download_shopping_cart/',
          download_shopping_cart, name='download_shopping_cart'),
-    path('recipes/<int:recipe_id>/favorite/', favorite, name='favorite'),
+    path('recipes/<int:recipe_id>/favorite/', RecipeViewSet.favorite, name='favorite'),
     path('recipes/<int:recipe_id>/shopping_cart/',
          shopping_cart, name='shopping_cart'),
     path('', include(router_v1.urls), name='api_v1'),

@@ -33,6 +33,30 @@ class RecipeViewSet(ModelViewSet):
 
     filterset_class = RecipeFilter
 
+    @api_view(('POST', 'DELETE'))
+    def favorite(request, recipe_id):
+        recipe = get_object_or_404(Recipe, id=recipe_id)
+
+        if request.method == 'POST':
+            if Favourite.objects.filter(recipe=recipe).exists():
+                raise exceptions.ValidationError('Рецепт уже в избранном')
+
+            serializer = FavouriteSerializer(recipe, context={'request': request})
+            Favourite.objects.filter(recipe=recipe).create(
+                user=request.user, recipe=recipe)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        if request.method == 'DELETE':
+            if not Favourite.objects.filter(recipe=recipe).exists():
+                raise exceptions.ValidationError('Рецепт не в избранном')
+
+            Favourite.objects.filter(recipe=recipe).delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class TagViewSet(RetrieveListViewSet):
     """Вью для работы с тегами."""
@@ -97,32 +121,6 @@ def subscribe(request, author_id):
                 'Вы не подписаны на этого пользователя')
 
         Subscription.objects.filter(subscribing=subscribing).delete()
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(('POST', 'DELETE'))
-@permission_classes((IsAuthenticated,))
-def favorite(request, recipe_id):
-    recipe = get_object_or_404(Recipe, id=recipe_id)
-
-    if request.method == 'POST':
-        if Favourite.objects.filter(recipe=recipe).exists():
-            raise exceptions.ValidationError('Рецепт уже в избранном')
-
-        serializer = FavouriteSerializer(recipe, context={'request': request})
-        Favourite.objects.filter(recipe=recipe).create(
-            user=request.user, recipe=recipe)
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    if request.method == 'DELETE':
-        if not Favourite.objects.filter(recipe=recipe).exists():
-            raise exceptions.ValidationError('Рецепт не в избранном')
-
-        Favourite.objects.filter(recipe=recipe).delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
