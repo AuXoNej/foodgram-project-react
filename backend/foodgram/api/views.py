@@ -33,7 +33,7 @@ class RecipeViewSet(ModelViewSet):
 
     filterset_class = RecipeFilter
 
-    @api_view(('POST', 'DELETE'))
+    @action(detail=False, methods=['POST', 'DELETE'])
     def favorite(self, request, recipe_id):
         recipe = get_object_or_404(Recipe, id=recipe_id)
 
