@@ -9,8 +9,6 @@ from rest_framework.views import exceptions
 from users.models import User
 
 
-
-
 class UserSerializer(serializers.ModelSerializer):
     """Сериализатор для модели User."""
 
