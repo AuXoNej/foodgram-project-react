@@ -24,7 +24,7 @@ urlpatterns = [
     path('recipes/download_shopping_cart/',
          download_shopping_cart, name='download_shopping_cart'),
     path('recipes/<int:recipe_id>/favorite/',
-         RecipeViewSet.favorite, name='favorite'),
+         RecipeViewSet, name='favorite'),
     path('recipes/<int:recipe_id>/shopping_cart/',
          shopping_cart, name='shopping_cart'),
     path('', include(router_v1.urls), name='api_v1'),
@@ -32,5 +32,4 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
-
 ]
