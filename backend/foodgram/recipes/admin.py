@@ -26,3 +26,10 @@ class IngredientAdmin(admin.ModelAdmin):
     list_filter = ('name', 'author__username', 'tags')
     search_fields = ('name',)
     inlines = (RecipeTags, RecipeIngredient)
+
+    readonly_fields = ('in_favorites',)
+
+    def in_favorites(self, obj):
+        return Favourite.objects.filter(recipe=obj).count()
+    in_favorites.short_description = 'В избранном у пользователей'
+    
