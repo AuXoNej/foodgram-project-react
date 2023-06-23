@@ -41,7 +41,10 @@ class RecipeViewSet(ModelViewSet):
             if Favourite.objects.filter(recipe=recipe).exists():
                 raise exceptions.ValidationError('Рецепт уже в избранном')
 
-            serializer = FavouriteSerializer(recipe, context={'request': request})
+            serializer = FavouriteSerializer(
+                recipe, 
+                context={'request': request}
+            )
             Favourite.objects.filter(recipe=recipe).create(
                 user=request.user, recipe=recipe)
 
