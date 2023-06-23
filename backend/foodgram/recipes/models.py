@@ -1,4 +1,4 @@
-from django.core.validators import MinValueValidator, validate_slug
+from django.core.validators import MinValueValidator
 from django.db import models
 from users.models import User
 
@@ -18,7 +18,6 @@ class Tag(models.Model):
     slug = models.SlugField(
         max_length=200,
         unique=True,
-        validators=[validate_slug()]
     )
 
     class Meta:
