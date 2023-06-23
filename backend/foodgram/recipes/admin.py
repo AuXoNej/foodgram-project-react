@@ -32,4 +32,3 @@ class IngredientAdmin(admin.ModelAdmin):
     def in_favorites(self, obj):
         return Favourite.objects.filter(recipe=obj).count()
     in_favorites.short_description = 'В избранном у пользователей'
-    
