@@ -1,6 +1,5 @@
 from django.conf import settings
-from django.core.validators import (MinValueValidator, validate_slug,
-                                    validate_unicode_slug)
+from django.core.validators import MinValueValidator
 from django.db import models
 from users.models import User
 
@@ -42,7 +41,7 @@ class Ingredient(models.Model):
 
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_INGREDIENT,
-        validators=[validate_name(name = 'Название ингридиента')],
+        validators=[validate_name(name='Название ингридиента')],
         verbose_name='Название ингридиента'
     )
     measurement_unit = models.CharField(

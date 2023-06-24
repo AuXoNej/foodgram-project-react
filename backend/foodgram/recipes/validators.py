@@ -6,23 +6,27 @@ validate_color = RegexValidator(
     'Не валидный hex-код'
 )
 
+
 def validate_name(value, name):
-    alphabet_small = 'abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя'
-    alphabet_big = 'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
+    alphabet_small = ('abcdefghijklmnopqrstuvwxyz'
+                      'абвгдеёжзийклмнопрстуфхцчшщъыьэюя')
+    alphabet_big = ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                    'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ')
 
     for letter_index in len(value):
-        if not (value[letter_index] in alphabet_small or value[letter_index] in alphabet_big):
+        if not (value[letter_index] in alphabet_small
+                or value[letter_index] in alphabet_big):
             raise ValidationError(
                 f'{name} должно содержать только буквы.'
             )
 
         if letter_index == 0:
-            if not value[letter_index] in  alphabet_big:
+            if not value[letter_index] in alphabet_big:
                 raise ValidationError(
                     f'{name} должно начинаться с заглавной буквы.'
                 )
         else:
-            if not value[letter_index] in  alphabet_small:
+            if not value[letter_index] in alphabet_small:
                 raise ValidationError(
                     'Заглавной может быть только первая буква.'
                 )
