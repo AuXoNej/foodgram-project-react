@@ -4,7 +4,7 @@ from django.core.validators import (MinValueValidator, validate_slug,
 from django.db import models
 from users.models import User
 
-from .validators import validate_color
+from .validators import validate_color, validate_name
 
 
 class Tag(models.Model):
@@ -13,7 +13,7 @@ class Tag(models.Model):
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_TAG,
         unique=True,
-        validators=[validate_unicode_slug],
+        validators=[validate_name(name='Название тега')],
         verbose_name='Название тега'
     )
     color = models.CharField(
@@ -25,7 +25,6 @@ class Tag(models.Model):
     slug = models.SlugField(
         max_length=settings.MAX_LENGTH_SLUG_TAG,
         unique=True,
-        validators=[validate_slug],
         verbose_name='Слаг тега'
     )
 
@@ -43,7 +42,8 @@ class Ingredient(models.Model):
 
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_INGREDIENT,
-        verbose_name='Название'
+        validators=[validate_name(name = 'Название ингридиента')],
+        verbose_name='Название ингридиента'
     )
     measurement_unit = models.CharField(
         max_length=settings.MAX_LENGTH_MEASUREMENT_UNIT_INGREDIENT,
@@ -87,6 +87,7 @@ class Recipe(models.Model):
 
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_RECIPE,
+        validators=[validate_name(name='Название рецепта')],
         verbose_name='Название рецепта'
     )
     text = models.TextField(

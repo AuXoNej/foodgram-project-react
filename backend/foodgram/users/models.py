@@ -4,6 +4,8 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.validators import validate_unicode_slug
 from django.db import models
 
+from ..recipes.validators import validate_name
+
 
 class User(AbstractUser):
     """Модель пользователя."""
@@ -24,13 +26,13 @@ class User(AbstractUser):
     first_name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_USER,
         verbose_name='Имя',
-        validators=[validate_unicode_slug]
+        validators=[validate_name(name='Имя')]
     )
 
     last_name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_USER,
         verbose_name='Фамилия',
-        validators=[validate_unicode_slug]
+        validators=[validate_name(name='Фамилия')]
     )
 
     USERNAME_FIELD = 'email'
