@@ -15,7 +15,7 @@ def validate_name(value):
                     'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ')
 
     for letter_index in len(name):
-        if not (value[letter_index] in alphabet_small
+        if not (name[letter_index] in alphabet_small
                 or value[letter_index] in alphabet_big):
             raise ValidationError(
                 'Поле может содержать только буквы.'
