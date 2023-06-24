@@ -7,7 +7,7 @@ validate_color = RegexValidator(
 )
 
 
-def validate_name(value, name):
+def validate_name(value):
     alphabet_small = ('abcdefghijklmnopqrstuvwxyz'
                       'абвгдеёжзийклмнопрстуфхцчшщъыьэюя')
     alphabet_big = ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -17,13 +17,13 @@ def validate_name(value, name):
         if not (value[letter_index] in alphabet_small
                 or value[letter_index] in alphabet_big):
             raise ValidationError(
-                f'{name} должно содержать только буквы.'
+                'Поле должно содержать только буквы.'
             )
 
         if letter_index == 0:
             if not value[letter_index] in alphabet_big:
                 raise ValidationError(
-                    f'{name} должно начинаться с заглавной буквы.'
+                    'Поле должно начинаться с заглавной буквы.'
                 )
         else:
             if not value[letter_index] in alphabet_small:
