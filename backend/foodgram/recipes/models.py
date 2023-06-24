@@ -12,7 +12,7 @@ class Tag(models.Model):
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_TAG,
         unique=True,
-        validators=[validate_name(name='Название тега')],
+        validators=[validate_name('Название тега')],
         verbose_name='Название тега'
     )
     color = models.CharField(
@@ -41,7 +41,7 @@ class Ingredient(models.Model):
 
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_INGREDIENT,
-        validators=[validate_name(name='Название ингридиента')],
+        validators=[validate_name('Название ингридиента')],
         verbose_name='Название ингридиента'
     )
     measurement_unit = models.CharField(
@@ -86,7 +86,7 @@ class Recipe(models.Model):
 
     name = models.CharField(
         max_length=settings.MAX_LENGTH_NAME_RECIPE,
-        validators=[validate_name(name='Название рецепта')],
+        validators=[validate_name('Название рецепта')],
         verbose_name='Название рецепта'
     )
     text = models.TextField(
