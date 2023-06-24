@@ -8,6 +8,7 @@ validate_color = RegexValidator(
 
 
 def validate_name(value):
+    value = str(value)
     alphabet_small = ('abcdefghijklmnopqrstuvwxyz'
                       'абвгдеёжзийклмнопрстуфхцчшщъыьэюя')
     alphabet_big = ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'
