@@ -30,7 +30,6 @@ class RecipeViewSet(ModelViewSet):
     serializer_class = RecipeSrializer
     permission_classes = (IsAuthorOrAuthenticatedCreateOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
-
     filterset_class = RecipeFilter
 
     @action(detail=True, methods=['POST', 'DELETE'])
@@ -114,11 +113,9 @@ class IngredientViewSet(RetrieveListViewSet):
     search_fields = ('name', )
 
 
-@action(detail=False, methods=('GET',))
 class SubscriptionViewSet(ModelViewSet):
     serializer_class = SubscriptionListSerializer
     permission_classes = (IsAuthenticated, )
-
     filter_backends = (SearchFilter,)
     search_fields = ('=subscribing__username',)
 
