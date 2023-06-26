@@ -5,9 +5,8 @@ from users.models import User
 
 
 class RecipeFilter(FilterSet):
-    author = filters.ModelMultipleChoiceFilter(
-        field_name='author__id',
-        queryset=User.objects.all()
+    author = filters.CharFilter(
+        field_name='author__id'
     )
     tags = filters.ModelMultipleChoiceFilter(
         field_name='tags__slug',
