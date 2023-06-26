@@ -159,11 +159,14 @@ class SubscriptionViewSet(ModelViewSet):
     filter_backends = (SearchFilter,)
     search_fields = ('=subscribing__username',)
 
+    def get_queryset(self): 
+        return Subscription.objects.filter( 
+            user=self.request.user 
+        ) 
+    
     @action(detail=False, methods=['GET', ])
     def subscriptions(self):
-        return Subscription.objects.filter(
-            user=self.request.user
-        )
+        return self.queryset
 
     @action(detail=True, methods=['POST', 'DELETE'])
     def subscribe(self, request, pk):
