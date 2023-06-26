@@ -15,7 +15,7 @@ router_v1.register(
 )
 router_v1.register(
     'users/subscribe',
-    SubscriptionViewSet.subscribe,
+    SubscriptionViewSet.subscribe(),
     basename='subscribe'
 )
 router_v1.register('recipes', RecipeViewSet, basename='recipes')
