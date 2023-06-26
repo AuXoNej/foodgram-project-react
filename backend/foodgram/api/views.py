@@ -123,40 +123,39 @@ class SubscriptionViewSet(ModelViewSet):
         return Subscription.objects.filter(
             user=self.request.user
         )
+    
+    @action(detail=True, methods=['POST', 'DELETE'])
+    def subscribe(self, request, pk):
+        user = request.user
+        subscribing = get_object_or_404(User, id=pk)
 
+        if request.method == 'POST':
+            if user == subscribing:
+                raise exceptions.ValidationError(
+                    'Нельзя подписаться на самого себя')
 
-@api_view(('POST', 'DELETE'))
-@permission_classes((IsAuthenticated,))
-def subscribe(request, author_id):
-    user = request.user
-    subscribing = get_object_or_404(User, id=author_id)
+            if Subscription.objects.filter(subscribing=subscribing).exists():
+                raise exceptions.ValidationError(
+                    'Вы уже подписаны на этого пользователя')
 
-    if request.method == 'POST':
-        if user == subscribing:
-            raise exceptions.ValidationError(
-                'Нельзя подписаться на самого себя')
+            serializer = SubscriptionSerializer(
+                subscribing, context={'request': request})
+            Subscription.objects.filter(subscribing=subscribing).create(
+                user=request.user, subscribing=subscribing)
 
-        if Subscription.objects.filter(subscribing=subscribing).exists():
-            raise exceptions.ValidationError(
-                'Вы уже подписаны на этого пользователя')
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        serializer = SubscriptionSerializer(
-            subscribing, context={'request': request})
-        Subscription.objects.filter(subscribing=subscribing).create(
-            user=request.user, subscribing=subscribing)
+        if request.method == 'DELETE':
+            if not Subscription.objects.filter(subscribing=subscribing).exists():
+                raise exceptions.ValidationError(
+                    'Вы не подписаны на этого пользователя')
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+            Subscription.objects.filter(subscribing=subscribing).delete()
 
-    if request.method == 'DELETE':
-        if not Subscription.objects.filter(subscribing=subscribing).exists():
-            raise exceptions.ValidationError(
-                'Вы не подписаны на этого пользователя')
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
-        Subscription.objects.filter(subscribing=subscribing).delete()
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(('GET',))
