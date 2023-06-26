@@ -20,8 +20,8 @@ router_v1.register('ingredients', IngredientViewSet, basename='ingredients')
 
 urlpatterns = [
     path('', include(router_v1.urls), name='api_v1'),
-    path('users/subscriptions', SubscriptionViewSet.subscriptions()),
-    path('users/subscribe', SubscriptionViewSet.subscribe()),
+    path('users/subscriptions/', SubscriptionViewSet.subscriptions),
+    path('users/<int:pk>/subscribe/', SubscriptionViewSet.subscribe),
     path('', include('djoser.urls')),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
