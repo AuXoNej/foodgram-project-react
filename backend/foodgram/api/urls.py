@@ -9,7 +9,7 @@ app_name = 'api'
 router_v1 = DefaultRouter()
 
 router_v1.register(
-    r'users',
+    r'^users/sub(?P[-\w]+)',
     SubscriptionViewSet,
     basename='subscriptions'
 )
