@@ -9,14 +9,9 @@ app_name = 'api'
 router_v1 = DefaultRouter()
 
 router_v1.register(
-    'users/subscriptions',
+    r'users',
     SubscriptionViewSet,
     basename='subscriptions'
-)
-router_v1.register(
-    'users/subscribe',
-    SubscriptionViewSet.subscribe(),
-    basename='subscribe'
 )
 router_v1.register('recipes', RecipeViewSet, basename='recipes')
 router_v1.register('tags', TagViewSet, basename='tags')
