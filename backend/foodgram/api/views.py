@@ -91,8 +91,8 @@ class RecipeViewSet(ModelViewSet):
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['GET',])
-    def download_shopping_cart(request):
+    @action(detail=False, methods=['GET', ])
+    def download_shopping_cart(self, request):
         user = request.user
         shopping_carts = ShoppingCart.objects.filter(user=user)
 
