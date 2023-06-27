@@ -14,7 +14,7 @@ router_v1.register(
     basename='subscriptions'
 )
 router_v1.register(
-    r'users/(?P<pk>[^/.]+)',
+    r'users/(?P<pk>[^/.]+)/subscribe',
     SubscriptionViewSet,
     basename='subscribe'
 )
