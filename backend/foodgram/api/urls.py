@@ -8,21 +8,20 @@ app_name = 'api'
 
 router_v1 = DefaultRouter()
 
-router_v1.register(
-    'users/subscriptions',
-    SubscriptionViewSet,
-    basename='subscriptions'
-)
 router_v1.register('recipes', RecipeViewSet, basename='recipes')
 router_v1.register('tags', TagViewSet, basename='tags')
 router_v1.register('ingredients', IngredientViewSet, basename='ingredients')
 
 urlpatterns = [
     path(
+        'users/subscriptions',
+        SubscriptionViewSet.as_view({'get': 'list'}),
+        name='subscriptions'
+    ),
+    path(
         'users/<int:author_id>/subscribe/',
         SubscriptionViewSet.as_view(
             {
-                'get':'list',
                 'post':'retrieve',
                 'delete':'retrieve'
             }

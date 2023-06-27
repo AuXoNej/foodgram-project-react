@@ -163,8 +163,10 @@ class SubscriptionViewSet(ModelViewSet):
         return Subscription.objects.filter(
             user=self.request.user
         )
-    
-    def retrieve(self, request, pk=None):
+    def list(self):
+        return self.queryset
+
+    def retrieve(self, request, pk):
         user = request.user
         subscribing = get_object_or_404(User, id=pk)
 
