@@ -5,10 +5,6 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path(r'api/', include('djoser.urls')),
-    path('api/auth/', include('djoser.urls')),
-    path('api/auth/', include('djoser.urls.authtoken')),
-    path('api/auth/', include('djoser.urls.jwt')),
     path(
         'redoc/',
         TemplateView.as_view(template_name='redoc.html'),

@@ -36,11 +36,15 @@ urlpatterns = [
         name='subscriptions'
     ),
     path(
-        'users/<int:pk>/subscribe/',
+        'users/<int:pk>/subscribe',
         SubscriptionViewSet.as_view(
-            {'post': 'subscriptions', 'delete': 'subscriptions'}
+            {'post': 'subscribe', 'delete': 'subscribe'}
         ),
         name='subscribe'
     ),
     path('', include(router_v1.urls), name='api_v1'),
+    path('', include('djoser.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
+    path('auth/', include('djoser.urls.jwt')),
 ]
