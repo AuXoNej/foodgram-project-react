@@ -14,7 +14,7 @@ router_v1.register(
     basename='subscriptions'
 )
 router_v1.register(
-    'users/<int:author_id>',
+    'users/<int:pk>',
     SubscriptionViewSet,
     basename='subscribe'
 )
