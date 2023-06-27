@@ -168,6 +168,8 @@ class SubscriptionViewSet(ModelViewSet):
     def subscriptions(self):
         return self.queryset
 
+class SubscribeViewSet(ModelViewSet):
+
     @action(detail=True, methods=['POST', 'DELETE'])
     def subscribe(self, request, pk):
         user = request.user
