@@ -14,7 +14,7 @@ path('users/<int:pk>/subscribe/', SubscriptionViewSet.subscribe),
 """
 
 router_v1.register(
-    'users/',
+    'users',
     SubscriptionViewSet,
     basename='users'
 )
