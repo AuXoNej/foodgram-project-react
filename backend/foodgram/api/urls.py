@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from .views import (IngredientViewSet, RecipeViewSet, SubscriptionViewSet,
-                    TagViewSet)
+                    TagViewSet, subscribe)
 
 app_name = 'api'
 
@@ -13,16 +13,22 @@ router_v1.register(
     SubscriptionViewSet,
     basename='subscriptions'
 )
-router_v1.register(
-    r'users/(?P<pk>[^/.]+)/subscribe',
-    SubscriptionViewSet,
-    basename='subscribe'
-)
 router_v1.register('recipes', RecipeViewSet, basename='recipes')
 router_v1.register('tags', TagViewSet, basename='tags')
 router_v1.register('ingredients', IngredientViewSet, basename='ingredients')
 
 urlpatterns = [
+    path(
+        'users/<int:author_id>/subscribe/',
+        SubscriptionViewSet.as_view(
+            {
+                'get':'list',
+                'post':'retrieve',
+                'delete':'retrieve'
+            }
+        ),
+        name='subscribe'
+    ),
     path('', include(router_v1.urls), name='api_v1'),
     path('', include('djoser.urls')),
     path('auth/', include('djoser.urls')),
