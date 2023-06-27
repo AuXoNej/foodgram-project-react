@@ -164,11 +164,7 @@ class SubscriptionViewSet(ModelViewSet):
             user=self.request.user
         )
 
-    @action(detail=False, methods=['GET', ])
-    def subscriptions(self):
-        return self.queryset
-
-    @action(detail=True, methods=['POST', 'DELETE'])
+    @action(detail=False, methods=['POST', 'DELETE'])
     def subscribe(self, request, pk):
         user = request.user
         subscribing = get_object_or_404(User, id=pk)
