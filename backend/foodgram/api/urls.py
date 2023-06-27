@@ -21,7 +21,7 @@ router_v1.register(
 )
 router_v1.register(
     'users/<int:pk>/subscribe',
-    SubscriptionViewSet.subscribe,
+    SubscriptionViewSet.subscribe.as_view(),
     basename='subscribe'
 )
 
