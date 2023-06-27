@@ -12,7 +12,7 @@ router_v1 = DefaultRouter()
 path('users/subscriptions/', SubscriptionViewSet.subscriptions),
 path('users/<int:pk>/subscribe/', SubscriptionViewSet.subscribe.a),
 path('', include('djoser.urls')),
-"""
+
 
 router_v1.register(
     'users/subscriptions',
@@ -21,14 +21,26 @@ router_v1.register(
 )
 router_v1.register(
     'users/<int:pk>/subscribe',
-    SubscriptionViewSet.subscribe.as_view(),
+    SubscriptionViewSet,
     basename='subscribe'
 )
-
+"""
 router_v1.register('recipes', RecipeViewSet, basename='recipes')
 router_v1.register('tags', TagViewSet, basename='tags')
 router_v1.register('ingredients', IngredientViewSet, basename='ingredients')
 
 urlpatterns = [
+    path(
+        'users/subscriptions',
+        SubscriptionViewSet.as_view({'get': 'subscriptions'}),
+        name='subscriptions'
+    ),
+    path(
+        'users/<int:pk>/subscribe/',
+        SubscriptionViewSet.as_view(
+            {'post': 'subscriptions', 'delete': 'subscriptions'}
+        ),
+        name='subscribe'
+    ),
     path('', include(router_v1.urls), name='api_v1'),
 ]
