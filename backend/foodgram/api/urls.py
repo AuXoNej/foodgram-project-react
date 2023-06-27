@@ -10,14 +10,19 @@ router_v1 = DefaultRouter()
 
 """
 path('users/subscriptions/', SubscriptionViewSet.subscriptions),
-path('users/<int:pk>/subscribe/', SubscriptionViewSet.subscribe),
+path('users/<int:pk>/subscribe/', SubscriptionViewSet.subscribe.a),
 path('', include('djoser.urls')),
 """
 
 router_v1.register(
-    'users',
+    'users/subscriptions',
     SubscriptionViewSet,
-    basename='users'
+    basename='subscriptions'
+)
+router_v1.register(
+    'users/<int:pk>/subscribe',
+    SubscriptionViewSet.subscribe,
+    basename='subscribe'
 )
 
 router_v1.register('recipes', RecipeViewSet, basename='recipes')
