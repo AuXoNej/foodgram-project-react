@@ -151,6 +151,15 @@ class Subscription(models.Model):
     )
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'subscribing'], name='unique_subscription'
+            ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('subscribing')),
+                name='Check_user',
+            )
+        ]
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
         ordering = ('-subscribing',)
@@ -175,6 +184,11 @@ class Favourite(models.Model):
     )
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'], name='unique_favourite'
+            ),
+        ]
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные рецепты'
         ordering = ('recipe',)
@@ -199,6 +213,11 @@ class ShoppingCart(models.Model):
     )
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'], name='unique_shopping_cart'
+            ),
+        ]
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Списки покупок'
         ordering = ('recipe',)
