@@ -9,7 +9,7 @@ admin.site.register(Ingredient)
 admin.site.register(Subscription)
 admin.site.register(Favourite)
 admin.site.register(ShoppingCart)
-    
+
 
 class RequiredInlineFormSet(BaseInlineFormSet):
     def _construct_form(self, i, **kwargs):
