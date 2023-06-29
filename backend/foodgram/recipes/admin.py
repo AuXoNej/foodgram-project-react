@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.forms.models import BaseInlineFormSet
 
 from .models import (Favourite, Ingredient, IngredientAmount, Recipe,
                      ShoppingCart, Subscription, Tag)
@@ -8,15 +9,25 @@ admin.site.register(Ingredient)
 admin.site.register(Subscription)
 admin.site.register(Favourite)
 admin.site.register(ShoppingCart)
+    
+
+class RequiredInlineFormSet(BaseInlineFormSet):
+    def _construct_form(self, i, **kwargs):
+        form = super(RequiredInlineFormSet, self)._construct_form(i, **kwargs)
+        if i < 1:
+            form.empty_permitted = False
+        return form
 
 
 class RecipeTags(admin.TabularInline):
     model = Recipe.tags.through
     extra = 1
+    formset = RequiredInlineFormSet
 
 
 class RecipeIngredient(admin.TabularInline):
     model = IngredientAmount
+    formset = RequiredInlineFormSet
 
 
 @admin.register(Recipe)
