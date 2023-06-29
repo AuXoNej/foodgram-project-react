@@ -35,5 +35,5 @@ class RecipeFilter(FilterSet):
 
 class IngredientFilter(FilterSet):
     name = filters.CharFilter(
-        field_name='name' 
+        field_name='name'
     )
