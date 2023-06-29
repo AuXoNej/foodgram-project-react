@@ -12,11 +12,13 @@ admin.site.register(ShoppingCart)
 
 class RecipeTags(admin.TabularInline):
     model = Recipe.tags.through
+    blank=True
     extra = 1
 
 
 class RecipeIngredient(admin.TabularInline):
     model = IngredientAmount
+    blank=True
 
 
 @admin.register(Recipe)
