@@ -20,7 +20,7 @@ class RequiredInlineFormSet(BaseInlineFormSet):
 
 
 class RecipeTags(admin.TabularInline):
-    model = Tag
+    model = Recipe.tags.through
     extra = 1
     formset = RequiredInlineFormSet
 
@@ -35,7 +35,7 @@ class RecipeIngredient(admin.TabularInline):
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('name', 'author')
     list_display_links = ('name',)
-    list_filter = ('name', 'author__username')
+    list_filter = ('name', 'author__username', 'tags')
     search_fields = ('name',)
     inlines = (RecipeTags, RecipeIngredient)
 
