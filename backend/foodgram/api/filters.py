@@ -35,5 +35,5 @@ class RecipeFilter(FilterSet):
 
 class IngredientFilter(FilterSet):
     name = filters.CharFilter(
-        queryset=Ingredient.objects.all()
+        field_name='name' 
     )
