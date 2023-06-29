@@ -6,6 +6,6 @@ validate_color = RegexValidator(
 )
 
 validate_name = RegexValidator(
-    r'^#([A-Za-zА-Яа-я])$',
+    r'^[A-Za-zА-Яа-я]$',
     'Поле может содержать только буквы.'
 )
