@@ -21,7 +21,6 @@ class RequiredInlineFormSet(BaseInlineFormSet):
 
 class RecipeTags(admin.TabularInline):
     model = Recipe.tags.through
-    extra = 1
     formset = RequiredInlineFormSet
 
 
