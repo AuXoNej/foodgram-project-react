@@ -1,6 +1,6 @@
 from django_filters.rest_framework import FilterSet, filters
 
-from recipes.models import Recipe, Tag
+from recipes.models import Ingredient, Recipe, Tag
 from users.models import User
 
 
@@ -31,3 +31,9 @@ class RecipeFilter(FilterSet):
 
     def get_queryset_shopping_cart(self, queryset, name, value):
         return queryset.filter(recipe_shopping_cart__user=self.request.user)
+
+
+class IngredientFilter(FilterSet):
+    name = filters.CharFilter(
+        queryset=Ingredient.objects.all()
+    )

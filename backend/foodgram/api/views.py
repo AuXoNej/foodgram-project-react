@@ -12,7 +12,7 @@ from rest_framework.views import exceptions
 from rest_framework.viewsets import ModelViewSet
 from users.models import User
 
-from .filters import RecipeFilter
+from .filters import IngredientFilter, RecipeFilter
 from .mixins import RetrieveListViewSet
 from .permissions import IsAuthorOrAuthenticatedCreateOrReadOnly
 from .serializers import (FavouriteSerializer, IngredientSerializer,
@@ -148,9 +148,8 @@ class IngredientViewSet(RetrieveListViewSet):
     serializer_class = IngredientSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
     pagination_class = None
-    filter_backends = (SearchFilter,)
-
-    search_fields = ('name', )
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = IngredientFilter
 
 
 class SubscriptionViewSet(ModelViewSet):
