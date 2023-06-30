@@ -188,15 +188,15 @@ class RecipeSrializer(serializers.ModelSerializer):
             instance.tags.set(tags_recipe)
 
         if 'ingredients' in self.initial_data:
-            recipe = Recipe.objects.get(id=instance.id)
-
-            IngredientAmount.objects.filter(recipe=instance).delete()
-
             ingredients = self.initial_data.pop('ingredients')
 
             if len(ingredients) == 0:
                 raise exceptions.ValidationError(
                     'Нельзя создать рецепт без ингридиентов')
+
+            recipe = Recipe.objects.get(id=instance.id)
+
+            IngredientAmount.objects.filter(recipe=instance).delete()
 
             ingredients_recipe = []
             for ingredient in ingredients:
