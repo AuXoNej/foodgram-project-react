@@ -124,17 +124,17 @@ class RecipeSrializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        if 'tags' not in self.initial_data:
-            return Recipe.objects.create(
-                author=self.context['request'].user, **validated_data)
-
-        tags = self.initial_data.pop('tags')
         ingredients = self.initial_data.pop('ingredients')
 
         if len(ingredients) == 0:
             raise exceptions.ValidationError(
                 'Нельзя создать рецепт без ингридиентов')
 
+        if 'tags' not in self.initial_data:
+            return Recipe.objects.create(
+                author=self.context['request'].user, **validated_data)
+
+        tags = self.initial_data.pop('tags')
         recipe = Recipe.objects.create(
             author=self.context['request'].user, **validated_data)
 
@@ -175,18 +175,6 @@ class RecipeSrializer(serializers.ModelSerializer):
         instance.cooking_time = validated_data.get(
             'cooking_time', instance.cooking_time)
 
-        if 'tags' in self.initial_data:
-            tags = self.initial_data.pop('tags')
-            tags_recipe = []
-            for tag in tags:
-                current_tag = get_object_or_404(
-                    Tag.objects,
-                    pk=tag
-                )
-                tags_recipe.append(current_tag)
-
-            instance.tags.set(tags_recipe)
-
         if 'ingredients' in self.initial_data:
             ingredients = self.initial_data.pop('ingredients')
 
@@ -223,6 +211,18 @@ class RecipeSrializer(serializers.ModelSerializer):
                     )
 
             IngredientAmount.objects.bulk_create(ingredients_recipe)
+
+        if 'tags' in self.initial_data:
+            tags = self.initial_data.pop('tags')
+            tags_recipe = []
+            for tag in tags:
+                current_tag = get_object_or_404(
+                    Tag.objects,
+                    pk=tag
+                )
+                tags_recipe.append(current_tag)
+
+            instance.tags.set(tags_recipe)
 
         instance.save()
         return instance
