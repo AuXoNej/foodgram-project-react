@@ -124,11 +124,20 @@ class RecipeSrializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        ingredients = self.validated_data.pop('ingredients')
+        ingredients = self.initial_data.pop('ingredients')
 
         if len(ingredients) == 0:
             raise exceptions.ValidationError(
                 'Нельзя создать рецепт без ингридиентов')
+        
+        current_ingredient = []
+        for ingredient in ingredients:
+            ingredient_id = ingredient['id']
+            ingredient_amount = ingredient['amount']
+            current_ingredient.append(get_object_or_404(
+                Ingredient.objects,
+                pk=ingredient_id
+            ))
 
         if 'tags' not in self.initial_data:
             return Recipe.objects.create(
@@ -148,17 +157,10 @@ class RecipeSrializer(serializers.ModelSerializer):
         recipe.tags.set(tags_recipe)
 
         ingredients_recipe = []
-        for ingredient in ingredients:
-            ingredient_id = ingredient['id']
-            ingredient_amount = ingredient['amount']
-            current_ingredient = get_object_or_404(
-                Ingredient.objects,
-                pk=ingredient_id
-            )
-
+        for ingredient in current_ingredient:
             ingredients_recipe.append(
                 IngredientAmount(
-                    ingredient=current_ingredient,
+                    ingredient=ingredient,
                     recipe=recipe,
                     amount=ingredient_amount,
                 )
