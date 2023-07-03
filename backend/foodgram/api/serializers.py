@@ -129,7 +129,7 @@ class RecipeSrializer(serializers.ModelSerializer):
         if len(ingredients) == 0:
             raise exceptions.ValidationError(
                 'Нельзя создать рецепт без ингридиентов')
-        
+
         current_ingredient = []
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
