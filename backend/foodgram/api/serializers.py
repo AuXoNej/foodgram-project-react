@@ -193,7 +193,7 @@ class RecipeSrializer(serializers.ModelSerializer):
                 try:
                     ingredient_id = ingredient['id']
                     ingredient_amount = ingredient['amount']
-    
+
                     current_ingredient.append(get_object_or_404(
                         Ingredient.objects,
                         pk=ingredient_id
