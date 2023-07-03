@@ -124,7 +124,7 @@ class RecipeSrializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        ingredients = self.initial_data.pop('ingredients')
+        ingredients = self.validated_data.pop('ingredients')
 
         if len(ingredients) == 0:
             raise exceptions.ValidationError(
