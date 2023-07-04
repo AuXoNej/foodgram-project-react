@@ -8,6 +8,7 @@ services:
     env_file:
       - ./.env
 
+
   backend:
     #image: auxon/foodgram_backend:latest
     build: ./
@@ -41,7 +42,6 @@ services:
       - ../docs/openapi-schema.yml:/usr/share/nginx/html/api/docs/openapi-schema.yml
       - static_value:/var/html/backend_static/
       - media_value:/var/html/backend_media/
-
 
     depends_on:
       - backend
