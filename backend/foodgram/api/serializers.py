@@ -143,20 +143,18 @@ class RecipeSrializer(serializers.ModelSerializer):
                 raise exceptions.ValidationError(
                     'Невалидный список ингридиентов')
 
-        if 'tags' not in self.initial_data:
-            return Recipe.objects.create(
-                author=self.context['request'].user, **validated_data)
+        tags_recipe = []
+        if 'tags' in self.initial_data:
+            tags = self.initial_data.pop('tags')
 
-        tags = self.initial_data.pop('tags')
+            for tag_id in tags:
+                tags_recipe.append(get_object_or_404(
+                    Tag.objects,
+                    pk=tag_id
+                ))
+
         recipe = Recipe.objects.create(
             author=self.context['request'].user, **validated_data)
-
-        tags_recipe = []
-        for tag_id in tags:
-            tags_recipe.append(get_object_or_404(
-                Tag.objects,
-                pk=tag_id
-            ))
 
         recipe.tags.set(tags_recipe)
 
