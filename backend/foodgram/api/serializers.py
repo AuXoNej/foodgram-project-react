@@ -138,6 +138,7 @@ class RecipeSrializer(serializers.ModelSerializer):
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             ingredient_amount = ingredient['amount']
+            raise exceptions.ValidationErro(f'{type(ingredient_amount)}')
             current_ingredient.append([get_object_or_404(
                 Ingredient.objects,
                 pk=ingredient_id
