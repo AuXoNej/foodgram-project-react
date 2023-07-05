@@ -124,6 +124,10 @@ class RecipeSrializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
+        if 'ingredients' not in self.initial_data:
+            raise exceptions.ValidationError(
+                'Нельзя создать рецепт без ингридиентов')
+
         ingredients = self.initial_data.pop('ingredients')
 
         if len(ingredients) == 0:
