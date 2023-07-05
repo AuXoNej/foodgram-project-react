@@ -140,7 +140,7 @@ class RecipeSrializer(serializers.ModelSerializer):
             ingredient_amount = ingredient['amount']
 
             if (not isinstance(ingredient_amount, int)
-                    and ingredient_amount < 1):
+                    or ingredient_amount < 1):
 
                 raise exceptions.ValidationError(
                     'Невалидный список ингридиентов')
@@ -200,7 +200,7 @@ class RecipeSrializer(serializers.ModelSerializer):
                 ingredient_amount = ingredient['amount']
 
                 if (not isinstance(ingredient_amount, int)
-                        and ingredient_amount < 1):
+                        or ingredient_amount < 1):
 
                     raise exceptions.ValidationError(
                         'Невалидный список ингридиентов')
