@@ -143,34 +143,37 @@ class RecipeSrializer(serializers.ModelSerializer):
                 raise exceptions.ValidationError(
                     'Невалидный список ингридиентов')
 
-        tags_recipe = []
-        if 'tags' in self.initial_data:
-            tags = self.initial_data.pop('tags')
+        if len(current_ingredient) > 0:
+            tags_recipe = []
+            if 'tags' in self.initial_data:
+                tags = self.initial_data.pop('tags')
 
-            for tag_id in tags:
-                tags_recipe.append(get_object_or_404(
-                    Tag.objects,
-                    pk=tag_id
-                ))
+                for tag_id in tags:
+                    tags_recipe.append(get_object_or_404(
+                        Tag.objects,
+                        pk=tag_id
+                    ))
 
-        recipe = Recipe.objects.create(
-            author=self.context['request'].user, **validated_data)
+            recipe = Recipe.objects.create(
+                author=self.context['request'].user, **validated_data)
 
-        recipe.tags.set(tags_recipe)
+            recipe.tags.set(tags_recipe)
 
-        ingredients_recipe = []
-        for ingredient in current_ingredient:
-            ingredients_recipe.append(
-                IngredientAmount(
-                    ingredient=ingredient,
-                    recipe=recipe,
-                    amount=ingredient_amount,
+            ingredients_recipe = []
+            for ingredient in current_ingredient:
+                ingredients_recipe.append(
+                    IngredientAmount(
+                        ingredient=ingredient,
+                        recipe=recipe,
+                        amount=ingredient_amount,
+                    )
                 )
-            )
 
-        IngredientAmount.objects.bulk_create(ingredients_recipe)
+            IngredientAmount.objects.bulk_create(ingredients_recipe)
 
-        return recipe
+            return recipe
+
+        return False
 
     def update(self, instance, validated_data):
         instance.image = validated_data.get('image', instance.image)
@@ -200,26 +203,27 @@ class RecipeSrializer(serializers.ModelSerializer):
                     raise exceptions.ValidationError(
                         'Невалидный список ингридиентов')
 
-            recipe = Recipe.objects.get(id=instance.id)
+            if len(current_ingredient) > 0:
+                recipe = Recipe.objects.get(id=instance.id)
 
-            IngredientAmount.objects.filter(recipe=instance).delete()
+                IngredientAmount.objects.filter(recipe=instance).delete()
 
-            ingredients_recipe = []
-            for ingredient in current_ingredient:
-                if not IngredientAmount.objects.filter(
-                        ingredient=ingredient,
-                        recipe=recipe,
-                        amount=ingredient_amount).exists():
-
-                    ingredients_recipe.append(
-                        IngredientAmount(
+                ingredients_recipe = []
+                for ingredient in current_ingredient:
+                    if not IngredientAmount.objects.filter(
                             ingredient=ingredient,
                             recipe=recipe,
-                            amount=ingredient_amount,
-                        )
-                    )
+                            amount=ingredient_amount).exists():
 
-            IngredientAmount.objects.bulk_create(ingredients_recipe)
+                        ingredients_recipe.append(
+                            IngredientAmount(
+                                ingredient=ingredient,
+                                recipe=recipe,
+                                amount=ingredient_amount,
+                            )
+                        )
+
+                IngredientAmount.objects.bulk_create(ingredients_recipe)
 
         if 'tags' in self.initial_data:
             tags = self.initial_data.pop('tags')
