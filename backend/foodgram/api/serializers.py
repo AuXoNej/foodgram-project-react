@@ -138,17 +138,20 @@ class RecipeSrializer(serializers.ModelSerializer):
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             ingredient_amount = ingredient['amount']
-            raise exceptions.ValidationErro(f'{type(ingredient_amount)}')
+
+            if (not isinstance(ingredient_amount, int)
+                    and ingredient_amount < 1):
+
+                raise exceptions.ValidationError(
+                    'Невалидный список ингридиентов')
+
             current_ingredient.append([get_object_or_404(
                 Ingredient.objects,
                 pk=ingredient_id
             ), ingredient_amount])
 
-        if len(current_ingredient) != len(ingredients):
-            raise exceptions.ValidationError(
-                'Невалидный список ингридиентов')
-
         tags_recipe = []
+
         if 'tags' in self.initial_data:
             tags = self.initial_data.pop('tags')
 
@@ -196,14 +199,16 @@ class RecipeSrializer(serializers.ModelSerializer):
                 ingredient_id = ingredient['id']
                 ingredient_amount = ingredient['amount']
 
+                if (not isinstance(ingredient_amount, int)
+                        and ingredient_amount < 1):
+
+                    raise exceptions.ValidationError(
+                        'Невалидный список ингридиентов')
+
                 current_ingredient.append([get_object_or_404(
                     Ingredient.objects,
                     pk=ingredient_id
                 ), ingredient_amount])
-
-            if len(current_ingredient) != len(ingredients):
-                raise exceptions.ValidationError(
-                    'Невалидный список ингридиентов')
 
             recipe = Recipe.objects.get(id=instance.id)
 
